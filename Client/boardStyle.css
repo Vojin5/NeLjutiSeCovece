@@ -1,0 +1,116 @@
+html{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+body{
+    display: flex;
+    background-color: #f7d89c;
+    background-image: repeating-linear-gradient(-26deg, rgba(255,255,255, 0.25), rgba(255,255,255, 0.25) 2px, transparent 3px, transparent 7px);
+    background-size: 6px 8px;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#outter-box{
+    border: 3px solid rgb(231, 33, 33);
+    width: 70%;
+    height: 97%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#inner-box{
+    padding: 5px;
+    display: flex;
+    border: 3px solid black;
+    width: 98%;
+    height: 97%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.fields{
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+
+.space-between-row{
+    width: 100%;
+    display: flex;
+    height: 5%;
+    justify-content: space-between;
+}
+
+.two-field{
+    display: flex;
+    width: 13%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+.three-field{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.disconnected .horisontal-line{
+    visibility: hidden;
+}
+
+img{
+    width: 35px;
+    height: 35px;
+}
+
+.center-row
+{
+    width: 100%;
+    display: flex;
+    height: 5%;
+    justify-content: center;
+}
+
+.connector-row{
+    z-index: -1;
+    height: 4%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 110px;
+}
+
+.big-row
+{
+    width: 100%;
+    display: flex;
+    height: 5%;
+    justify-content:center;
+    align-items: center;
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+.big-connector{
+    z-index: -1;
+    width: 78.5%;
+    height: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
