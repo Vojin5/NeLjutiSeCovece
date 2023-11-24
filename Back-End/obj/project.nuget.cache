@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fombOt2lq/9AqcFANVxV1LIaZdX9dXLaqZjxq9LzBqc7fwYQP4ptWaNpZuwZNeEuUOdLVZMaDl6TbsLysXZmOg==",
+  "dgSpecHash": "jkcT5zaF6JmdPpkXVRb52tIIPeP3B0QpYim8tL5jtiwW1SuDOKVryK6SM9CupntFleSldl++O4pWXgeGDvcOZg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Roko\\Desktop\\AIPS\\Back-End\\Back-End.csproj",
+  "projectFilePath": "C:\\Users\\Roko\\Desktop\\AIPS_PROJEKAT\\NeLjutiSeCovece\\Back-End\\Back-End.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Roko\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Roko\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

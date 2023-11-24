@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Roko\\Desktop\\AIPS\\Back-End\\Back-End.csproj": {}
+    "C:\\Users\\Roko\\Desktop\\AIPS_PROJEKAT\\NeLjutiSeCovece\\Back-End\\Back-End.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Roko\\Desktop\\AIPS\\Back-End\\Back-End.csproj": {
+    "C:\\Users\\Roko\\Desktop\\AIPS_PROJEKAT\\NeLjutiSeCovece\\Back-End\\Back-End.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Roko\\Desktop\\AIPS\\Back-End\\Back-End.csproj",
+        "projectUniqueName": "C:\\Users\\Roko\\Desktop\\AIPS_PROJEKAT\\NeLjutiSeCovece\\Back-End\\Back-End.csproj",
         "projectName": "Back-End",
-        "projectPath": "C:\\Users\\Roko\\Desktop\\AIPS\\Back-End\\Back-End.csproj",
+        "projectPath": "C:\\Users\\Roko\\Desktop\\AIPS_PROJEKAT\\NeLjutiSeCovece\\Back-End\\Back-End.csproj",
         "packagesPath": "C:\\Users\\Roko\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Roko\\Desktop\\AIPS\\Back-End\\obj\\",
+        "outputPath": "C:\\Users\\Roko\\Desktop\\AIPS_PROJEKAT\\NeLjutiSeCovece\\Back-End\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Roko\\AppData\\Roaming\\NuGet\\NuGet.Config",
