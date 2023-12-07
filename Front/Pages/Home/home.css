@@ -210,7 +210,7 @@
     -webkit-user-select: none;
     vertical-align: middle;
     white-space: nowrap;
-    width: fit-content%;
+    width: 100%;
   }
   
   .button-19:after {
