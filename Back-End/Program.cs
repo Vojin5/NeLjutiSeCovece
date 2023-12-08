@@ -1,5 +1,7 @@
 using Back_End.Models;
+using Back_End.SignalR.Hubs;
 using Microsoft.EntityFrameworkCore;
+using Back_End.SignalR.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +18,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
-        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        builder.WithOrigins("http://127.0.0.1:5500").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
 });
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<IGameLobby, GameLobby>();
+builder.Services.AddSingleton<IActiveGames, ActiveGames>();
+builder.Services.AddSingleton<IOnlinePlayers, OnlinePlayers>();
 
 var app = builder.Build();
 
@@ -36,5 +43,7 @@ app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<GameHub>("/game");
 
 app.Run();
