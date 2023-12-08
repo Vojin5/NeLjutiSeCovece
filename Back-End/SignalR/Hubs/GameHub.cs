@@ -37,8 +37,6 @@ public class GameHub : Hub
         }
     }
 
-
-
     public override Task OnConnectedAsync()
     {
         lock (_gameLock)

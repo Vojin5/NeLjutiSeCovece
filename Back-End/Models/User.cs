@@ -12,5 +12,6 @@ namespace Back_End.Models
         public string Password { get; set; }
         public string? PasswordSalt { get; set; }
         public int? Elo { get; set; }
+        public byte[] Image { get; set; }
     }
 }

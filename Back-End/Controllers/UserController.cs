@@ -1,67 +1,72 @@
 ﻿using Back_End.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BCrypt.Net;
 
-namespace Back_End.Controllers
+[ApiController]
+[Route("[controller]")]
+public class UserController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class UserController : ControllerBase
+    public Context Context { get; set; }
+    public UserController(Context context)
     {
-        public Context Context { get; set; }
-        public UserController(Context context)
+        Context = context;
+    }
+
+    [HttpPost("register")]
+    public async Task<ActionResult> RegisterUser([FromBody] UserRegisterModel user)
+    {
+        var existingUser = Context.Users
+            .Where(u => u.Username == user.Username)
+            .FirstOrDefault();
+
+        if (existingUser != null)
         {
-            Context = context;
+            return BadRequest();
         }
 
-        [HttpPost("Register")]
-        public async Task<ActionResult> RegisterUser([FromBody] User user)
+        User newUser = new User();
+        newUser.Username = user.Username;
+        newUser.Email = user.Email;
+        newUser.Elo = 0;
+        newUser.Image = Convert.FromBase64String(user.ImageBase64Encoded);
+
+        string salt = BCrypt.Net.BCrypt.GenerateSalt();
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
+
+        newUser.Password = passwordHash;
+        newUser.PasswordSalt = salt;
+
+        await Context.Users.AddAsync(newUser);
+        await Context.SaveChangesAsync();
+
+        return Ok();
+
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult> LoginUser(UserLoginModel user)
+    {
+        var expectedUser = await Context.Users
+            .Where(u => u.Username == user.Username)
+            .FirstOrDefaultAsync();
+
+        if (expectedUser == null)
         {
-            var existingUser = Context.Users.Where(u => u.Username == user.Username).FirstOrDefault();
-
-            if (existingUser != null)
-            {
-                return BadRequest();
-            }
-
-            string salt = BCrypt.Net.BCrypt.GenerateSalt();
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
-
-            user.Password = passwordHash;
-            user.PasswordSalt = salt;
-
-            await Context.Users.AddAsync(user);
-            await Context.SaveChangesAsync();
-
-            return Ok();
-
+            return NotFound();
         }
 
-        [HttpGet("Login")]
-        public async Task<ActionResult> LoginUser([FromQuery]string username, [FromQuery]string password)
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password, expectedUser.PasswordSalt);
+        if (hashedPassword != expectedUser.Password)
         {
-            var expectedUser = await Context.Users.Where(u => u.Username == username).FirstOrDefaultAsync();
-
-            if (expectedUser == null)
-            {
-                return NotFound();
-            }
-
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, expectedUser.PasswordSalt);
-            if (hashedPassword != expectedUser.Password)
-            {
-                return BadRequest();
-            }
-
-            return Ok(new
-            {
-                expectedUser.Id,
-                expectedUser.Username
-            });
+            return BadRequest();
         }
 
-
-
+        return Ok(new
+        {
+            expectedUser.Id,
+            expectedUser.Username,
+            expectedUser.Elo,
+            expectedUser.Image
+        });
     }
 }
