@@ -27,6 +27,7 @@ export class HomePage {
             }, 1000);
             document.body.classList.remove("scrollLogin");
             document.body.classList.add("scrollLogin");
+            document.body.classList.add("bod");
         });
 
         this.loginButton.addEventListener("click", () => {
