@@ -1,7 +1,11 @@
 ﻿namespace Back_End.SignalR.Models;
 public class PlayerLobby
 {
-    public int GameId { get; set; }
-    public int LobbyPosition { get; set; }
-    public int LobbyColor { get; set; }
+    public PlayerLobby(string username, string avatar)
+    {
+        Username = username;
+        Avatar = avatar;
+    }
+    public string Username { get; set; }
+    public string Avatar { get; set; }
 }

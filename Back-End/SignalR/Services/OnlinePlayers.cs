@@ -6,7 +6,7 @@ public class OnlinePlayers : IOnlinePlayers
     private Dictionary<string, PlayerInfo> _onlinePlayers = new();
     public void AddPlayer(string connectionId)
     {
-        _onlinePlayers.Add(connectionId, new PlayerInfo());
+        _onlinePlayers.Add(connectionId, new PlayerInfo(connectionId));
     }
 
     public PlayerInfo RemovePlayer(string connectionId)

@@ -17,23 +17,22 @@ public class GameHub : Hub
         _players = players;
         _games = games;
     }
-
-    //Metoda koja se poziva iz klijenta
-    public void JoinGame(int playerId)
+    public void JoinLobby(int playerId)
     {
         lock (_gameLock)
         {
-            PlayerInfo player = _players.GetPlayerInfo(Context.ConnectionId);
-            player.Id = playerId;
-            _lobby.AddPlayerToLobby(player);
-            Clients.All.SendAsync("ShowLobby", _lobby.Players);
-            if (_lobby.IsFull)
-            {
-                player.GameId = _lobby.Id;
-                _games.AddGame(_lobby.Id, _lobby.Players);
-                Clients.All.SendAsync("ShowLobby", _lobby.Players);
-                _lobby.CreateLobby();
-            }
+            _lobby.AddPlayerToLobby(_players.GetPlayerInfo(Context.ConnectionId), playerId);
+            _lobby.UpdateLobby();
+        }
+    }
+
+    public void LeaveLobby()
+    {
+        lock (_gameLock)
+        {
+            _lobby.RemovePlayerFromLobby(_players.GetPlayerInfo(Context.ConnectionId));
+            _lobby.AcknowledgePlayerLeft(Context.ConnectionId);
+            _lobby.UpdateLobby();
         }
     }
 
@@ -43,6 +42,7 @@ public class GameHub : Hub
         {
             _players.AddPlayer(Context.ConnectionId);
         }
+
         return base.OnConnectedAsync();
     }
 
@@ -50,18 +50,11 @@ public class GameHub : Hub
     {
         lock (_gameLock)
         {
-            PlayerInfo player = _players.GetPlayerInfo(Context.ConnectionId);
-            if (player.InLobby)
-            {
-                _lobby.RemovePlayerFromLobby(player);
-            }
-            if (player.InGame)
-            {
-                _games.RemovePlayerFromGame(player);
-            }
-            _players.RemovePlayer(Context.ConnectionId);
-
+            PlayerInfo player = _players.RemovePlayer(Context.ConnectionId);
+            _lobby.EnsureThatPlayerIsNotInLobby(player);
+            _lobby.UpdateLobby();
         }
+
         return base.OnDisconnectedAsync(exception);
     }
 

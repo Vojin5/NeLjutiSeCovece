@@ -3,6 +3,6 @@
 namespace Back_End;
 public interface IGameClient
 {
-    public void UpdateLobby();
+    public void UpdateLobby(LobbyUpdate update);
 }
 

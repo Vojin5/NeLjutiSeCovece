@@ -15,6 +15,7 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult> RegisterUser([FromBody] UserRegisterModel user)
     {
+        Console.WriteLine(user.ImageBase64Encoded);
         var existingUser = Context.Users
             .Where(u => u.Username == user.Username)
             .FirstOrDefault();
@@ -44,7 +45,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult> LoginUser(UserLoginModel user)
+    public async Task<ActionResult> LoginUser([FromBody] UserLoginModel user)
     {
         var expectedUser = await Context.Users
             .Where(u => u.Username == user.Username)
