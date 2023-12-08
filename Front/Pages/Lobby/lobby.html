@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./lobby.css">
+    <title>Lobby</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="background back1"></div>
+        <div class="content">
+            <!-- Navigation -->
+            <div id="lobby-navigation">
+                <div class="logo-container">
+                    <img id="logo" src="../../Resources/logo.png">
+                </div>
+                <div class="avatar-container">
+                    <img id="avatar" src="../../Resources/user.jpg">
+                </div>
+                <div class="label-container">
+                    <div class="label"> Player Name </div>
+                    <div class="label">🏆</div>
+                    <div class="label">Points</div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="buttons-container enabled">
+                <button id="join-button" class="button" type="button">
+                    Join Game
+                </button>
+                <button id="create-button" class="button" type="button">
+                    Create Game
+                </button>
+            </div>
+            
+            <!-- Players -->
+            <div class="lobby-container disabled">
+                <button id="exit-button" type="button">
+                    <img src="../../Resources/logout.png" width="80%" height="auto"> 
+                </button>
+                <div class="player-holder">
+                    <img class="player-avatar" src="../../Resources/user.jpg">
+                    <div class="player-name">Player Name</div>
+                </div>
+
+                <div class="player-holder">
+                    <img class="player-avatar" src="../../Resources/user.jpg">
+                    <div class="player-name">Player Name</div>
+                </div>
+
+                <div class="player-holder">
+                    <img class="player-avatar" src="../../Resources/user.jpg">
+                    <div class="player-name">Player Name</div>
+                </div>
+
+                <div class="player-holder">
+                    <img class="player-avatar" src="../../Resources/user.jpg">
+                    <div class="player-name">Player Name</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="./lobby.js" type="module"></script>
+</body>
+</html>
