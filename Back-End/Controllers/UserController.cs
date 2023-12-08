@@ -43,7 +43,7 @@ public class UserController : ControllerBase
 
     }
 
-    [HttpGet("login")]
+    [HttpPost("login")]
     public async Task<ActionResult> LoginUser(UserLoginModel user)
     {
         var expectedUser = await Context.Users
