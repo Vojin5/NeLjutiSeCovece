@@ -9,18 +9,49 @@
 <body>
     <div class="wrapper">
         <div class="background back1"></div>
-        <div class="content">
+        <div class="content" id="page1">
             <img class="logo" src="../../Resources/logo.png" alt="Logo">
             <div class="header-text"> Ne ljuti se covece </div>
-            <button id="play-button" role="button">Play</button>
+            <button id="play-button" class="button" role="button">Play</button>
+            
 
         </div>
     </div>
 
     <div class="wrapper">
         <div class="background back2"></div>
-        <div class="content">
+        <div class="content" id="page2">
+            <div class="label">Username</div>
+            <input class="input" id="UsernameLogin">
+            <div class="label">Password</div>
+            <input class="input" type="password" id="PasswordLogin">
+            <button id="login-button" class="button" role="button">Log in</button>
+            <a href="#page3">
+                <button id="scroll-register" class="button" role="button">Register</button>
+            </a>
             
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="background back3"></div>
+        <div class="content" id="page3">
+            <div class="label" id="registerUsernameLabel" >Username</div>
+            <input class="input" type="text" id="UsernameRegister">
+            <div class="label" id="registerPasswordLabel">Password</div>
+            <input class="input" type="password" id="PasswordRegister">
+            <div class="label" id="registerEmailLabel">Email</div>
+            <input class="input" type="email" id="EmailRegister">
+            <div class="label">Choose your avatar</div>
+
+            <input style="display: none;" type="file" id="file-input" class="file-input">
+            <label class="file-input-label" for="file-input">Select a file</label>
+            <img style="display: none;" class="image-preview" src="">
+            <br>
+
+            <a>
+            <button id="register-button" class="button" role="button">Register</button>
+            </a>
         </div>
     </div>
 
