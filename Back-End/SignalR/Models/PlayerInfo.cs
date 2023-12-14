@@ -19,7 +19,7 @@
     public override bool Equals(object? obj)
     {
         PlayerInfo other = obj as PlayerInfo;
-        return Id == other.Id;
+        return ConnectionId == other.ConnectionId;
     }
 }
 

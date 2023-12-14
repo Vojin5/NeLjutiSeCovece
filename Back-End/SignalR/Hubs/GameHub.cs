@@ -1,5 +1,6 @@
 ﻿using Back_End.SignalR.Models;
 using Back_End.SignalR.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Back_End.SignalR.Hubs;
@@ -17,11 +18,11 @@ public class GameHub : Hub
         _players = players;
         _games = games;
     }
-    public void JoinLobby(int playerId)
+    public void JoinLobby()
     {
         lock (_gameLock)
         {
-            _lobby.AddPlayerToLobby(_players.GetPlayerInfo(Context.ConnectionId), playerId);
+            _lobby.AddPlayerToLobby(_players.GetPlayerInfo(Context.ConnectionId));
             _lobby.UpdateLobby();
         }
     }
@@ -31,8 +32,18 @@ public class GameHub : Hub
         lock (_gameLock)
         {
             _lobby.RemovePlayerFromLobby(_players.GetPlayerInfo(Context.ConnectionId));
-            _lobby.AcknowledgePlayerLeft(Context.ConnectionId);
             _lobby.UpdateLobby();
+        }
+    }
+
+    public void SendMyInfo(int playerId, string avatar)
+    {
+        lock (_gameLock)
+        {
+            PlayerInfo player = _players.GetPlayerInfo(Context.ConnectionId);
+            player.Id = playerId;
+            player.Avatar = avatar;
+            Console.WriteLine("PLAYER ID JE " + player.Id);
         }
     }
 

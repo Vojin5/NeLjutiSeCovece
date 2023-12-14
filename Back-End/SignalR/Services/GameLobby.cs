@@ -26,21 +26,16 @@ public class GameLobby : IGameLobby
 
     public void UpdateLobby()
     {
+        _playerConnectionIds.Clear();
         _players.ForEach(p =>
         {
             _playerConnectionIds.Add(p.ConnectionId);
             _update.AddPlayer(new PlayerLobby(p.Username, p.Avatar));
         });
-
-        _hubContext.Clients.Clients(_playerConnectionIds).SendAsync("UpdateLobby", _update);
+        
+        _hubContext.Clients.Clients(_playerConnectionIds).SendAsync("UpdateLobby", _update.Lobby);
         _update.Clear();
-        _playerConnectionIds.Clear();
     }
-    public void AcknowledgePlayerLeft(string connectionId)
-    {
-        _hubContext.Clients.Client(connectionId).SendAsync("UpdateLobbyAfterLeaving");
-    }
-
     public void EnsureThatPlayerIsNotInLobby(PlayerInfo player)
     {
         if (player.InLobby)
@@ -49,9 +44,8 @@ public class GameLobby : IGameLobby
         }
     }
 
-    public void AddPlayerToLobby(PlayerInfo player, int playerId)
+    public void AddPlayerToLobby(PlayerInfo player)
     {
-        player.Id = playerId;
         player.InLobby = true;
         _players.Add(player);
     }

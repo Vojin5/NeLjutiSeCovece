@@ -1,11 +1,11 @@
 ﻿namespace Back_End.SignalR.Models;
 public class LobbyUpdate
 {
-    private List<PlayerLobby> _players = new(4);
-    public List<PlayerLobby> Lobby { get; set; }
+    private LinkedList<PlayerLobby> _players = new LinkedList<PlayerLobby>();
+    public LinkedList<PlayerLobby> Lobby { get => _players; }
     public void AddPlayer(PlayerLobby player)
     {
-        _players.Add(player);
+        _players.AddLast(player);
     }
     public void Clear()
     {
