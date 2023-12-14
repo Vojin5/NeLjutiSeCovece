@@ -36,14 +36,14 @@ public class GameHub : Hub
         }
     }
 
-    public void SendMyInfo(int playerId, string avatar)
+    public void SendMyInfo(int playerId, string avatar, string username)
     {
         lock (_gameLock)
         {
             PlayerInfo player = _players.GetPlayerInfo(Context.ConnectionId);
             player.Id = playerId;
             player.Avatar = avatar;
-            Console.WriteLine("PLAYER ID JE " + player.Id);
+            player.Username = username;
         }
     }
 
