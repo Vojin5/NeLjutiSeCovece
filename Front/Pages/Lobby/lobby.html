@@ -10,6 +10,7 @@
     <div class="wrapper">
         <div class="background back1"></div>
         <div class="content">
+            <div><button disabled="false" style="width: 100px; height: 100px;" class="dice">Dice</button></div>
             <!-- Navigation -->
             <div id="lobby-navigation">
                 <div class="logo-container">
@@ -19,9 +20,9 @@
                     <img id="avatar" src="../../Resources/user.jpg">
                 </div>
                 <div class="label-container">
-                    <div class="label"> Player Name </div>
+                    <div class="label" id="username"> Player Name </div>
                     <div class="label">🏆</div>
-                    <div class="label">Points</div>
+                    <div class="label" id="points">Points</div>
                 </div>
             </div>
 
@@ -41,23 +42,23 @@
                     <img src="../../Resources/logout.png" width="80%" height="auto"> 
                 </button>
                 <div class="player-holder">
-                    <img class="player-avatar" src="../../Resources/user.jpg">
-                    <div class="player-name">Player Name</div>
+                    <img class="player-avatar avatar0" src="../../Resources/user.jpg">
+                    <p class="player-name username0">Player Name</p>
                 </div>
 
                 <div class="player-holder">
-                    <img class="player-avatar" src="../../Resources/user.jpg">
-                    <div class="player-name">Player Name</div>
+                    <img class="player-avatar avatar1" src="../../Resources/user.jpg">
+                    <p class="player-name username1" >Player Name</p>
                 </div>
 
                 <div class="player-holder">
-                    <img class="player-avatar" src="../../Resources/user.jpg">
-                    <div class="player-name">Player Name</div>
+                    <img class="player-avatar avatar2" src="../../Resources/user.jpg">
+                    <p class="player-name username2">Player Name</p>
                 </div>
 
                 <div class="player-holder">
-                    <img class="player-avatar" src="../../Resources/user.jpg">
-                    <div class="player-name">Player Name</div>
+                    <img class="player-avatar avatar3" src="../../Resources/user.jpg">
+                    <p class="player-name username3">Player Name</p>
                 </div>
             </div>
 
@@ -66,5 +67,6 @@
 
 
     <script src="./lobby.js" type="module"></script>
+    <script src="../../../script/signalr.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 ﻿using Back_End.SignalR.Models;
 using Back_End.SignalR.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Back_End.SignalR.Hubs;
@@ -17,12 +18,17 @@ public class GameHub : Hub
         _players = players;
         _games = games;
     }
-    public void JoinLobby(int playerId)
+    public void JoinLobby()
     {
         lock (_gameLock)
         {
-            _lobby.AddPlayerToLobby(_players.GetPlayerInfo(Context.ConnectionId), playerId);
+            _lobby.AddPlayerToLobby(_players.GetPlayerInfo(Context.ConnectionId));
             _lobby.UpdateLobby();
+
+            if (_lobby.IsFull)
+            {
+                _games.StartGame(_lobby);
+            }
         }
     }
 
@@ -31,9 +37,27 @@ public class GameHub : Hub
         lock (_gameLock)
         {
             _lobby.RemovePlayerFromLobby(_players.GetPlayerInfo(Context.ConnectionId));
-            _lobby.AcknowledgePlayerLeft(Context.ConnectionId);
             _lobby.UpdateLobby();
         }
+    }
+
+    public void SendMyInfo(int playerId, string avatar, string username)
+    {
+        lock (_gameLock)
+        {
+            PlayerInfo player = _players.GetPlayerInfo(Context.ConnectionId);
+            player.Id = playerId;
+            player.Avatar = avatar;
+            player.Username = username;
+        }
+    }
+    public void DiceThrown(int gameId)
+    {
+        lock (_gameLock)
+        {
+            _games.DiceThrown(gameId);
+        }
+        
     }
 
     public override Task OnConnectedAsync()
@@ -50,6 +74,7 @@ public class GameHub : Hub
     {
         lock (_gameLock)
         {
+            Console.WriteLine("IGRAC IZLAZI!");
             PlayerInfo player = _players.RemovePlayer(Context.ConnectionId);
             _lobby.EnsureThatPlayerIsNotInLobby(player);
             _lobby.UpdateLobby();
