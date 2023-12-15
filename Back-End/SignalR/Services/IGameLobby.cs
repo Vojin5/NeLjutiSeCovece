@@ -10,5 +10,6 @@ public interface IGameLobby
     public void UpdateLobby();
     public void EnsureThatPlayerIsNotInLobby(PlayerInfo player);
     public void RemovePlayerFromLobby(PlayerInfo player);
+    public void Clear();
 }
 

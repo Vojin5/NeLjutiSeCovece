@@ -24,6 +24,11 @@ public class GameHub : Hub
         {
             _lobby.AddPlayerToLobby(_players.GetPlayerInfo(Context.ConnectionId));
             _lobby.UpdateLobby();
+
+            if (_lobby.IsFull)
+            {
+                _games.StartGame(_lobby);
+            }
         }
     }
 
@@ -46,6 +51,14 @@ public class GameHub : Hub
             player.Username = username;
         }
     }
+    public void DiceThrown(int gameId)
+    {
+        lock (_gameLock)
+        {
+            _games.DiceThrown(gameId);
+        }
+        
+    }
 
     public override Task OnConnectedAsync()
     {
@@ -61,6 +74,7 @@ public class GameHub : Hub
     {
         lock (_gameLock)
         {
+            Console.WriteLine("IGRAC IZLAZI!");
             PlayerInfo player = _players.RemovePlayer(Context.ConnectionId);
             _lobby.EnsureThatPlayerIsNotInLobby(player);
             _lobby.UpdateLobby();

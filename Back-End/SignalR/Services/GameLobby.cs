@@ -55,4 +55,9 @@ public class GameLobby : IGameLobby
         _players.Remove(player);
         player.InLobby = false;
     }
+
+    public void Clear()
+    {
+        _players = new(4);
+    }
 }

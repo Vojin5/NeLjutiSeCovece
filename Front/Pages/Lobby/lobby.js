@@ -12,6 +12,9 @@ export class Lobby {
         this.joinButton = document.querySelector("#join-button");
         this.createButton = document.querySelector("#create-button");
         this.exitButton = document.querySelector("#exit-button");
+        //proba dugme - obrisati kasnije
+        this.diceButton = document.body.querySelector(".dice");
+
         this.setEventListeners();
 
         //user izgled
@@ -28,7 +31,6 @@ export class Lobby {
         this.p2Username = document.body.querySelector(".username2");
         this.p3Avatar = document.body.querySelector(".avatar3");
         this.p3Username = document.body.querySelector(".username3");
-
         this.connection = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -58,14 +60,21 @@ export class Lobby {
             
             await this.connection.invoke("LeaveLobby");
         });
-    }
+
+        this.diceButton.addEventListener("click", async () => {
+            await this.connection.invoke("DiceThrown", this.gameId);
+        });
+    }   
 
     async establishConnection() {
         this.connection = new signalR.HubConnectionBuilder()
             .withUrl(serverUrl + "/game")
             .build();
 
-        this.connection.on("UpdateLobby", (players) => this.updateLobby(players));
+        this.connection.on("UpdateLobby", (players) => this.updateLobbyScreen(players));
+        this.connection.on("GameStart", (gameId) => this.startGameScreen(gameId));
+        this.connection.on("NextPlayer", (playerId) => this.nextPlayerScreen(playerId));
+        this.connection.on("DiceArrived", (diceNum) => this.diceArrivedScreen(diceNum));
 
         await this.connection.start();
         const pInfo = {
@@ -77,7 +86,7 @@ export class Lobby {
         await this.connection.invoke("SendMyInfo", pInfo.playerId, pInfo.avatar, pInfo.username);
     }
 
-    updateLobby(players) {
+    updateLobbyScreen(players) {
         this.p0Avatar.src = "../../Resources/user.jpg";
         this.p0Username.textContent = "Player Name";
         this.p1Avatar.src = "../../Resources/user.jpg";
@@ -88,12 +97,37 @@ export class Lobby {
         this.p3Username.textContent = "Player Name";
 
         let pAvatar, pUsername;
-        players.forEach((p, index) => {
+        this.players = players;
+        this.players.forEach((p, index) => {
             pAvatar = document.body.querySelector(".avatar" + index);
             pUsername = document.body.querySelector(".username" + index);
             pAvatar.src = prefix64Encoded + p.avatar;
             pUsername.textContent = p.username;
         });
+    }
+
+    startGameScreen(gameId) {
+        this.gameId = gameId;
+
+        this.buttonsContainer.classList.remove("enabled");
+        this.buttonsContainer.classList.add("disabled");
+
+        this.playersContainer.classList.remove("enabled");
+        this.playersContainer.classList.add("disabled");
+
+    }
+
+    nextPlayerScreen(playerId) {
+        if (Number.parseInt(localStorage.getItem("id")) == playerId) {
+            this.diceButton.removeAttribute("disabled");
+        }
+        else {
+            this.diceButton.setAttribute("disabled", "true");
+        }
+    }
+
+    diceArrivedScreen(diceNum) {
+        console.log(diceNum);
     }
 }
 
