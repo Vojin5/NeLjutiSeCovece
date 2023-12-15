@@ -48,6 +48,9 @@ export class Lobby {
             this.playersContainer.classList.remove("disabled");
             this.playersContainer.classList.add("enabled");
 
+            document.body.classList.remove("scrollDown");
+            document.body.classList.add("scrollDown");
+
             await this.connection.invoke("JoinLobby");
         });
 
