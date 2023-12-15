@@ -30,7 +30,6 @@ body{
     height: 100vh;
     position: absolute;
     z-index: -1;
-    
     background-repeat: no-repeat;
     background-size: 100% 100vh;
     filter: blur(4px) grayscale(50%) brightness(50%);
@@ -103,6 +102,11 @@ body{
 }
 
 
+.lobby-container *{
+    display: flex;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
 
 .lobby-container{
     transition: all 0.5s;
