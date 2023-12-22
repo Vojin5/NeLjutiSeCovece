@@ -1,5 +1,6 @@
 import { serverUrl } from "../../config.js";
 import { prefix64Encoded } from "../../constants.js";
+import { Dice } from ".././Home/Components/dice.js";
 
 export class Lobby {
     constructor()
@@ -12,8 +13,6 @@ export class Lobby {
         this.joinButton = document.querySelector("#join-button");
         this.createButton = document.querySelector("#create-button");
         this.exitButton = document.querySelector("#exit-button");
-        //proba dugme - obrisati kasnije
-        this.diceButton = document.body.querySelector(".dice");
 
         this.setEventListeners();
 
@@ -64,9 +63,6 @@ export class Lobby {
             await this.connection.invoke("LeaveLobby");
         });
 
-        this.diceButton.addEventListener("click", async () => {
-            await this.connection.invoke("DiceThrown", this.gameId);
-        });
     }   
 
     async establishConnection() {
