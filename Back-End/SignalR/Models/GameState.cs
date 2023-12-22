@@ -56,8 +56,8 @@ public class GameState
     //props
     public List<PlayerInfo> Players { get => _players; set => _players = value; }
     public int Id { get; set; } = IdGenerator++;
-    public int CurrentPlayerTurn { get => CurrentPlayerTurn % 4; set => CurrentPlayerTurn = value % 4; }
-    public int NextPlayerTurnId { get => CurrentPlayerTurn++; }
+    public int CurrentPlayerTurn { get; set; }
+    public int NextPlayerTurnId { get => ++CurrentPlayerTurn % 4; }
 
     public GameState(List<PlayerInfo> players)
     {

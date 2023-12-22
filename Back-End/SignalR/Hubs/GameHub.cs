@@ -54,6 +54,7 @@ public class GameHub : Hub
     //Kada igrac baci kockicu koju je dobio od servera
     public void DiceThrown(int gameId)
     {
+        Console.WriteLine(Context.ConnectionId);
         lock (_gameLock)
         {
             _games.DiceThrown(gameId);

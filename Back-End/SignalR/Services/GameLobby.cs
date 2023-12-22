@@ -27,14 +27,14 @@ public class GameLobby : IGameLobby
 
     public void UpdateLobby()
     {
+        Console.WriteLine("MOZE");
         _playerConnectionIds.Clear();
         _players.ForEach(p =>
         {
             _playerConnectionIds.Add(p.ConnectionId);
             _update.AddPlayer(new PlayerLobby(p.Username, p.Avatar));
         });
-        
-        _hubContext.Clients.Clients(_playerConnectionIds).SendAsync("UpdateLobby", _update.Lobby);
+        _hubContext.Clients.Clients(_playerConnectionIds).SendAsync("handleUpdateLobby", _update.Lobby);
         _update.Clear();
     }
     public void EnsureThatPlayerIsNotInLobby(PlayerInfo player)

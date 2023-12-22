@@ -5,10 +5,10 @@ using Back_End.SignalR.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.Listen(System.Net.IPAddress.Parse("192.168.28.8"), 5295);
-});
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.Listen(System.Net.IPAddress.Parse("192.168.28.8"), 5295);
+//});
 
 // Add services to the container.
 
@@ -23,7 +23,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
-        builder.WithOrigins(new string[]{ "http://127.0.0.1:5500", "http://192.168.28.8:5500"}).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+        builder.SetIsOriginAllowed(host => true)
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
 builder.Services.AddSignalR();

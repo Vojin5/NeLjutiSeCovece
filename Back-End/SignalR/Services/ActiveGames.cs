@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using Back_End.SignalR.Hubs;
+﻿using Back_End.SignalR.Hubs;
 using Back_End.SignalR.Models;
 using Microsoft.AspNetCore.SignalR;
 
@@ -22,7 +21,7 @@ public class ActiveGames : IActiveGames
         List<string> connectionIds = new(4);
         lobby.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
         _hubContext.Clients.Clients(connectionIds).SendAsync("handleGameStart", game.Id);
-        _hubContext.Clients.Clients(connectionIds).SendAsync("handleMyTurn", game.NextPlayerTurnId);
+        _hubContext.Clients.Clients(game.Players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handleMyTurn");
         lobby.Clear();
     }
 
@@ -36,6 +35,7 @@ public class ActiveGames : IActiveGames
 
     public void DiceThrown(int gameId)
     {
+        
         GameState game = _activeGames[gameId];
 
         List<string> connectionIds = new(4);
@@ -57,7 +57,7 @@ public class ActiveGames : IActiveGames
         List<PlayerMove> moves = game.GeneratePossiblePlayerMoves(game.CurrentPlayerTurn, diceNum);
         if (moves.Count == 0)
         {
-            _hubContext.Clients.Clients(connectionIds).SendAsync("handleMyTurn", game.NextPlayerTurnId);
+            _hubContext.Clients.Clients(game.Players[game.NextPlayerTurnId].ConnectionId).SendAsync("handleMyTurn", game.NextPlayerTurnId);
             return;
         }
 
@@ -73,7 +73,7 @@ public class ActiveGames : IActiveGames
 
         game.UpdateGameState(move);
         _hubContext.Clients.Clients(connectionIds).SendAsync("handlePlayerMove", move);
-        _hubContext.Clients.Clients(connectionIds).SendAsync("handleMyTurn", game.NextPlayerTurnId);
+        _hubContext.Clients.Clients(game.Players[game.NextPlayerTurnId].ConnectionId).SendAsync("handleMyTurn");
 
     }
 }
