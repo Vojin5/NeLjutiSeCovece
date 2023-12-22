@@ -13,7 +13,13 @@ export class Lobby {
         this.joinButton = document.querySelector("#join-button");
         this.createButton = document.querySelector("#create-button");
         this.exitButton = document.querySelector("#exit-button");
+<<<<<<< HEAD
 
+=======
+        //proba dugme - obrisati kasnije
+        this.diceButton = document.body.querySelector(".dice");
+        
+>>>>>>> origin/lobby
         this.setEventListeners();
 
         //user izgled

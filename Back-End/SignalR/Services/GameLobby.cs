@@ -9,6 +9,7 @@ public class GameLobby : IGameLobby
     private List<PlayerInfo> _players = new(4);
     private LobbyUpdate _update = new();
     List<string> _playerConnectionIds = new(4);
+    
 
     //props
     public bool IsFull { get => _players.Count == 4; }
