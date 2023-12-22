@@ -7,18 +7,41 @@
     box-sizing: border-box;
 }
 
+
+
+@keyframes scrollDown {
+    0%{
+        transform: translateY(0);
+    }
+
+    50%{
+        transform: translateY(-50vh) scale(0.7);
+    }
+    
+    100%{
+      transform: translateY(-100vh) scale(1.0);
+    }
+  }
+
+  .scrollDown{
+    animation-duration: 2s;
+    animation-timing-function: ease;
+    animation-name: scrollDown;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
+  }
+
 html{
     font-family: 'Roboto', sans-serif;
     width: 100%;
-    height: 100vh;
-    
+    height: 200vh;
 }
 
 body{
     font-family: 'Roboto', sans-serif;
     width: 100%;
     height: 100vh;
-    
+    overflow: hidden;
 }
 
 .back1{
@@ -30,7 +53,6 @@ body{
     height: 100vh;
     position: absolute;
     z-index: -1;
-    
     background-repeat: no-repeat;
     background-size: 100% 100vh;
     filter: blur(4px) grayscale(50%) brightness(50%);
@@ -67,6 +89,7 @@ body{
 #avatar{
     aspect-ratio: 1;
     height: 100%;
+    width: auto;
     border: 2px solid whitesmoke;
     border-radius: 50%;
     object-fit: cover;
@@ -103,6 +126,11 @@ body{
 }
 
 
+.lobby-container *{
+    display: flex;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
 
 .lobby-container{
     transition: all 0.5s;

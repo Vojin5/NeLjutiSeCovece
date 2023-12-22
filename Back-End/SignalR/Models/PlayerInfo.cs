@@ -1,4 +1,6 @@
-﻿public class PlayerInfo
+﻿using Back_End.SignalR.Models;
+
+public class PlayerInfo
 {
     public PlayerInfo()
     {
@@ -16,10 +18,12 @@
     public string Avatar { get; set; }
     public string Username { get; set; }
 
+    public Color Color { get; set; }
+
     public override bool Equals(object? obj)
     {
         PlayerInfo other = obj as PlayerInfo;
-        return Id == other.Id;
+        return ConnectionId == other.ConnectionId;
     }
 }
 

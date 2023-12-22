@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./lobby.css">
+    <link rel="stylesheet" href="./boardStyle.css">
+    <link rel="stylesheet" href="./dice.css">
     <title>Lobby</title>
 </head>
 <body>
@@ -19,9 +21,9 @@
                     <img id="avatar" src="../../Resources/user.jpg">
                 </div>
                 <div class="label-container">
-                    <div class="label"> Player Name </div>
+                    <div class="label" id="username"> Player Name </div>
                     <div class="label">🏆</div>
-                    <div class="label">Points</div>
+                    <div class="label" id="points">Points</div>
                 </div>
             </div>
 
@@ -41,30 +43,345 @@
                     <img src="../../Resources/logout.png" width="80%" height="auto"> 
                 </button>
                 <div class="player-holder">
-                    <img class="player-avatar" src="../../Resources/user.jpg">
-                    <div class="player-name">Player Name</div>
+                    <img class="player-avatar avatar0" src="../../Resources/user.jpg">
+                    <p class="player-name username0">Player Name</p>
                 </div>
 
                 <div class="player-holder">
-                    <img class="player-avatar" src="../../Resources/user.jpg">
-                    <div class="player-name">Player Name</div>
+                    <img class="player-avatar avatar1" src="../../Resources/user.jpg">
+                    <p class="player-name username1" >Player Name</p>
                 </div>
 
                 <div class="player-holder">
-                    <img class="player-avatar" src="../../Resources/user.jpg">
-                    <div class="player-name">Player Name</div>
+                    <img class="player-avatar avatar2" src="../../Resources/user.jpg">
+                    <p class="player-name username2">Player Name</p>
                 </div>
 
                 <div class="player-holder">
-                    <img class="player-avatar" src="../../Resources/user.jpg">
-                    <div class="player-name">Player Name</div>
+                    <img class="player-avatar avatar3" src="../../Resources/user.jpg">
+                    <p class="player-name username3">Player Name</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla  -->
+        <div class="table-container">
+            <div class="left-aisle">
+                <div class="table-player-container">
+                    <img class="table-player-image yellow-border" src="../../Resources/user.jpg">
+                    <div class="table-player-name">
+                        Player Name
+                    </div>
+                </div>
+                <div class="table-player-container">
+                    <img class="table-player-image blue-border" src="../../Resources/user.jpg">
+                    <div class="table-player-name">
+                        Player Name
+                    </div>
+                </div>
+            </div>
+            <div id="outter-box">
+                <div id="inner-box">
+                    <!-- first row -->
+                    <div class="space-between-row">
+                        <div class="two-field">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                        </div>
+                        <div class="three-field">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                        </div>
+                        <div class="two-field">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                        </div>
+                    </div>
+                    <!-- connector row-->
+                    <div class="connector-row">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- second row-->
+                    <div class="space-between-row">
+                        <div class="two-field">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                        </div>
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                        <div class="two-field">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                        </div>
+                    </div>
+                    <!-- connector row-->
+                    <div class="connector-row">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- third row -->
+                    <div class="center-row">
+                        <div class="name">
+                            Player yellow
+                        </div>
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                            <img class="horisontal-line"src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                        <div class="name">
+                            Player Green
+                        </div>
+                    </div>
+                    <!-- connector row-->
+                    <div class="connector-row">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- 4th row -->
+                    <div class="center-row">
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                    </div>
+                    <!-- connector row-->
+                    <div class="connector-row">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- 1st big row -->
+                    <div class="big-row">
+                        <div class="home-row">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                        </div>
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/green_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                        <div class="home-row">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                    </div>
+                    <!-- Connector -->
+                    <div class="big-connector">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- second big row-->
+                    <div class="big-row">
+                        <div class="home-row">
+                            <img class="fields" src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                        </div>
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/yellow_field.svg">
+                            <!-- DICE -->
+                            <div class="dice-container">
+                    
+                            </div>
+                            <!-- DICE END-->
+                            <img class="fields"src="./Resources/Polja/red_field.svg">
+                        </div>
+                        <div class="home-row">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields" src="./Resources/Polja/red_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/red_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/red_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                    </div>
+                    <!-- Connector -->
+                    <div class="big-connector">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- 3rd Big row-->
+                    <div class="big-row">
+                        <div class="home-row">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                        </div>
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields" src="./Resources/Polja/blue_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                        <div class="home-row">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/red_field.svg">
+                        </div>
+                    </div>
+                    <!-- connector row-->
+                    <div class="connector-row">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- 4th row -->
+                    <div class="center-row">
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/blue_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                    </div>
+                    <!-- connector row-->
+                    <div class="connector-row">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- third row -->
+                    <div class="center-row">
+                        <div class="name">
+                            Player Blue
+                        </div>
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/blue_field.svg">
+                            <img class="horisontal-line"src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                        <div class="name">
+                            Player Red
+                        </div>
+                    </div>
+                    <!-- connector row-->
+                    <div class="connector-row">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- second row-->
+                    <div class="space-between-row">
+                        <div class="two-field">
+                            <img class="fields"src="./Resources/Polja/blue_field.svg">
+                            <img class="fields"src="./Resources/Polja/blue_field.svg">
+                        </div>
+                        <div class="three-field disconnected">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/blue_field.svg">
+                            <img class="horisontal-line" src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                        <div class="two-field">
+                            <img class="fields"src="./Resources/Polja/red_field.svg">
+                            <img class="fields"src="./Resources/Polja/red_field.svg">
+                        </div>
+                    </div>
+                    <!-- connector row-->
+                    <div class="connector-row">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                        <img src="./Resources/Polja/verticalLine.png">
+                    </div>
+                    <!-- first row -->
+                    <div class="space-between-row">
+                        <div class="two-field">
+                            <img class="fields"src="./Resources/Polja/blue_field.svg">
+                            <img class="fields"src="./Resources/Polja/blue_field.svg">
+                        </div>
+                        <div class="three-field">
+                            <img class="fields"src="./Resources/Polja/blue_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                            <img src="./Resources/Polja/horisontalLine.png">
+                            <img class="fields"src="./Resources/Polja/base_field.svg">
+                        </div>
+                        <div class="two-field">
+                            <img class="fields"src="./Resources/Polja/red_field.svg">
+                            <img class="fields"src="./Resources/Polja/red_field.svg">
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <div class="right-aisle">
+                <div class="table-player-container">
+                    <img class="table-player-image green-border" src="../../Resources/user.jpg">
+                    <div class="table-player-name">
+                        Player 
+                    </div>
+                </div>
+                
+                <div class="table-player-container">
+                    <img class="table-player-image red-border" src="../../Resources/user.jpg">
+                    <div class="table-player-name">
+                        Player Name
+                    </div>
+                </div>
+                
+            </div>
         </div>
+
+        
     </div>
 
 
     <script src="./lobby.js" type="module"></script>
+    <script src="../../../script/signalr.js"></script>
 </body>
 </html>

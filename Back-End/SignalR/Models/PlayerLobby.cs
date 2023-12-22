@@ -5,7 +5,7 @@ public class PlayerLobby
     {
         Username = username;
         Avatar = avatar;
-    }
+    }   
     public string Username { get; set; }
     public string Avatar { get; set; }
 }

@@ -1,4 +1,4 @@
-import { serverUrl } from "../../config.js";
+import { baseUrl, serverUrl } from "../../config.js";
 import { emailPattern, passwordPattern, usernamePattern } from "../../regex.js";
 export class HomePage {
     constructor() {
@@ -65,9 +65,9 @@ export class HomePage {
                 const user = await userLogin.json();
                 localStorage.setItem("id", user.id);
                 localStorage.setItem("username", user.username);
-                localStorage.setItem("elo", user.elo);
-                localStorage.setItem("image", "data:image/png;base64," + user.image);
-                console.log(localStorage.getItem("id"));
+                localStorage.setItem("points", user.elo);
+                localStorage.setItem("image", /*data:image/png;base64,*/ user.image);
+                window.open(baseUrl + '/Front/Pages/Lobby/lobby.html');
             }
             else {
                 alert("Dodati kasnije errore kada je login neuspesan");
