@@ -1,6 +1,5 @@
 ﻿using Back_End.SignalR.Models;
 using Back_End.SignalR.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Back_End.SignalR.Hubs;
@@ -63,14 +62,15 @@ public class GameHub : Hub
     }
 
     //Kada igrac odigra jedan od mogucih poteza
-    public void MovePlayed(int gameId)
+    public void MovePlayed(int gameId, PlayerMove move)
     {
         lock (_gameLock)
         {
-            _games.MovePlayed(gameId);
+            _games.MovePlayed(gameId, move);
         }
     }
 
+    //izvrsavaju se kada klijent udje/izadje
     public override Task OnConnectedAsync()
     {
         lock (_gameLock)
