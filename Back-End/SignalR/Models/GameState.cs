@@ -312,6 +312,7 @@ public class GameState
     public void UpdateGameState(PlayerMove move)
     {
         Figure figure = _figures[CurrentPlayerTurn][move.FigureId];
+        _positions[figure.Position] = Figure.Default;
         figure.Position = move.NewPosition;
 
         Figure figureAtPos = _positions[move.NewPosition];
