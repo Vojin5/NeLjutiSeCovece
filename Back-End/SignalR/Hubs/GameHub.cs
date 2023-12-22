@@ -51,6 +51,8 @@ public class GameHub : Hub
             player.Username = username;
         }
     }
+
+    //Kada igrac baci kockicu koju je dobio od servera
     public void DiceThrown(int gameId)
     {
         lock (_gameLock)
@@ -58,6 +60,15 @@ public class GameHub : Hub
             _games.DiceThrown(gameId);
         }
         
+    }
+
+    //Kada igrac odigra jedan od mogucih poteza
+    public void MovePlayed(int gameId)
+    {
+        lock (_gameLock)
+        {
+            _games.MovePlayed(gameId);
+        }
     }
 
     public override Task OnConnectedAsync()

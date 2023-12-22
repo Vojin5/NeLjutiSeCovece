@@ -11,18 +11,18 @@ public class ActiveGames : IActiveGames
 
     public ActiveGames(IHubContext<GameHub> hubContext)
     {
-        _hubContext = hubContext; 
+        _hubContext = hubContext;
     }
     public void StartGame(IGameLobby lobby)
     {
         GameState game = new(lobby.Players);
         _activeGames.Add(game.Id, game);
 
-        
+
         List<string> connectionIds = new(4);
         lobby.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
-        _hubContext.Clients.Clients(connectionIds).SendAsync("GameStart", game.Id);
-        _hubContext.Clients.Clients(connectionIds).SendAsync("NextPlayer", game.NextPlayer);
+        _hubContext.Clients.Clients(connectionIds).SendAsync("handleGameStart", game.Id);
+        _hubContext.Clients.Clients(connectionIds).SendAsync("handleMyTurn", game.NextPlayerTurnId);
         lobby.Clear();
     }
 
@@ -33,21 +33,48 @@ public class ActiveGames : IActiveGames
         //player.InGame = false;
     }
 
+
     public void DiceThrown(int gameId)
     {
-        //Izmeniti generisanje broja kockice kasnije
         GameState game = _activeGames[gameId];
+
+        List<string> connectionIds = new(4);
+        game.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
+
+        _hubContext.Clients.Clients(connectionIds).SendAsync("handleStartDiceAnimation");
+
+        //Izmeniti generisanje broja kockice kasnije
+
         int diceNum = new Random().Next(7);
         if (diceNum == 0)
         {
             diceNum = 1;
         }
 
+        _hubContext.Clients.Clients(connectionIds).SendAsync("handleDiceNumber", diceNum);
+        
+
+        List<PlayerMove> moves = game.GeneratePossiblePlayerMoves(game.CurrentPlayerTurn, diceNum);
+        if (moves.Count == 0)
+        {
+            _hubContext.Clients.Clients(connectionIds).SendAsync("handleMyTurn", game.NextPlayerTurnId);
+            return;
+        }
+
+        _hubContext.Clients.Client(game.Players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handlePossibleMoves", moves);
+    }
+
+    public void MovePlayed(int gameId, PlayerMove move)
+    {
+        GameState game = _activeGames[gameId];
+
         List<string> connectionIds = new(4);
         game.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
-        Console.WriteLine(game.Players.Count.ToString());
-        _hubContext.Clients.Clients(connectionIds).SendAsync("DiceArrived", diceNum);
-        _hubContext.Clients.Clients(connectionIds).SendAsync("NextPlayer", game.NextPlayer);
+
+        game.UpdateGameState(move);
+        _hubContext.Clients.Clients(connectionIds).SendAsync("handlePlayerMove", move);
+        _hubContext.Clients.Clients(connectionIds).SendAsync("handleMyTurn", game.NextPlayerTurnId);
+
     }
 }
 

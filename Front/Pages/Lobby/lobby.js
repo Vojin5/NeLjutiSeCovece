@@ -14,7 +14,7 @@ export class Lobby {
         this.exitButton = document.querySelector("#exit-button");
         //proba dugme - obrisati kasnije
         this.diceButton = document.body.querySelector(".dice");
-
+        
         this.setEventListeners();
 
         //user izgled
