@@ -1,6 +1,6 @@
 import { serverUrl } from "../../config.js";
 import { prefix64Encoded } from "../../constants.js";
-import { Dice } from ".././Home/Components/dice.js";
+import { GameTable } from "../Home/Components/gameTable.js";
 
 export class Lobby {
     constructor()
@@ -18,7 +18,7 @@ export class Lobby {
         //user izgled
         document.getElementById("avatar").src = prefix64Encoded + localStorage.getItem("image");
         document.getElementById("username").innerHTML = localStorage.getItem("username");
-        document.getElementById("points").innerHTML = localStorage.getItem("elo");
+        document.getElementById("points").innerHTML = localStorage.getItem("points");
 
         //player avatars and usernames
         this.p0Avatar = document.body.querySelector(".avatar0");
@@ -46,9 +46,6 @@ export class Lobby {
             this.playersContainer.classList.remove("disabled");
             this.playersContainer.classList.add("enabled");
 
-            document.body.classList.remove("scrollDown");
-            document.body.classList.add("scrollDown");
-
             await this.connection.invoke("JoinLobby");
         });
 
@@ -69,10 +66,8 @@ export class Lobby {
             .withUrl(serverUrl + "/game")
             .build();
 
-        this.connection.on("UpdateLobby", (players) => this.updateLobbyScreen(players));
-        this.connection.on("GameStart", (gameId) => this.startGameScreen(gameId));
-        this.connection.on("NextPlayer", (playerId) => this.nextPlayerScreen(playerId));
-        this.connection.on("DiceArrived", (diceNum) => this.diceArrivedScreen(diceNum));
+        this.connection.on("handleUpdateLobby", (players) => this.handleUpdateLobby(players));
+        this.connection.on("handleGameStart", (gameId) => this.handleGameStart(gameId));
 
         await this.connection.start();
         const pInfo = {
@@ -84,7 +79,8 @@ export class Lobby {
         await this.connection.invoke("SendMyInfo", pInfo.playerId, pInfo.avatar, pInfo.username);
     }
 
-    updateLobbyScreen(players) {
+    handleUpdateLobby(players) {
+        
         this.p0Avatar.src = "../../Resources/user.jpg";
         this.p0Username.textContent = "Player Name";
         this.p1Avatar.src = "../../Resources/user.jpg";
@@ -104,28 +100,8 @@ export class Lobby {
         });
     }
 
-    startGameScreen(gameId) {
-        this.gameId = gameId;
-
-        this.buttonsContainer.classList.remove("enabled");
-        this.buttonsContainer.classList.add("disabled");
-
-        this.playersContainer.classList.remove("enabled");
-        this.playersContainer.classList.add("disabled");
-
-    }
-
-    nextPlayerScreen(playerId) {
-        if (Number.parseInt(localStorage.getItem("id")) == playerId) {
-            this.diceButton.removeAttribute("disabled");
-        }
-        else {
-            this.diceButton.setAttribute("disabled", "true");
-        }
-    }
-
-    diceArrivedScreen(diceNum) {
-        console.log(diceNum);
+    handleGameStart(gameId) {
+        new GameTable(gameId, this.connection, this.players).draw();
     }
 }
 

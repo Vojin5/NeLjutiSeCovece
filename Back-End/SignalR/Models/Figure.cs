@@ -1,5 +1,4 @@
 ﻿namespace Back_End.SignalR.Models;
-
 public class Figure
 {
     private static Figure defaultFigure = new Figure(-1);
@@ -9,6 +8,7 @@ public class Figure
     public bool InHome { get; set; }
     public int HomePosition { get; set; }
     public Color Color { get; set; }
+
 
 
     public static Figure Default { get => defaultFigure; }

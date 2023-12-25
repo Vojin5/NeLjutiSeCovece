@@ -25,6 +25,7 @@ export class Dice{
     stopAnimation(number)
     {
         clearInterval(this.interval);
+        this.diceContainer.removeChild(document.querySelector(".dice"));
         this.drawDice(number);
         this.diceNumber = number;
     }
@@ -44,7 +45,6 @@ export class Dice{
 
     drawDice(number)
     {
-        console.log(number);
         const dice = document.createElement("div");
     
         dice.classList.add("dice");
@@ -98,6 +98,10 @@ export class Dice{
                 [80,80]
             ]
         };
+    }
+
+    addClickListener(func) {
+        this.diceContainer.addEventListener("click", func);
     }
 
 }
