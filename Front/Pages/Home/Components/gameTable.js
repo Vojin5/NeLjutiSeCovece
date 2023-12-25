@@ -7,4 +7,6 @@ export class GameTable{
         this.gameID = gameID;
         this.dice = new Dice();
     }
+
+    
 }

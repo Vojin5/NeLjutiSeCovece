@@ -130,19 +130,37 @@ export class Lobby {
 }
 
 let lobby = new Lobby();
-
+//bug sa vise klikova na polje
 let y1 = document.getElementById("-1");
 let y2 = document.getElementById("0");
+let y3 = document.getElementById("1");
 y1.addEventListener("click" , () => {
-    let tmp = y1.src;
-    y1.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-    y2.src = tmp;
+    animateFigure(y1,y2,1000);
+    
 });
 
 y2.addEventListener("click" , () => {
-    let tmp = y2.src;
-    y2.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-    y1.src = tmp;
+    animateFigure(y2,y3,1000);
 })
 
+function animateFigure(figureSrc,figureDst,baseTime)
+{
+    figureSrc.classList.add("animate-source");
+    setTimeout(() => {
+        figureSrc.classList.remove("animate-source");
+    }, baseTime);
+    let tmp = figureSrc.src;
+    setTimeout(() => {
+        figureSrc.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+    }, baseTime/4);
+    setTimeout(() => {
+        figureDst.src = tmp;
+    }, (baseTime/5) * 4);
+    setTimeout(() => {
+        figureDst.classList.add("animate-destination");
+    }, baseTime/2);
+    setTimeout(() => {
+        figureDst.classList.remove("animate-destination");
+    }, baseTime + (baseTime/2));
+}
 
