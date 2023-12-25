@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Listen(System.Net.IPAddress.Parse("10.66.98.32"), 5295);
+    options.Listen(System.Net.IPAddress.Parse("192.168.82.8"), 5295);
 });
 
 // Add services to the container.

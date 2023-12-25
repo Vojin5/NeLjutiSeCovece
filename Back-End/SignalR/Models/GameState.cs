@@ -49,6 +49,7 @@ public class GameState
     private List<PlayerInfo> _players;
     private static int IdGenerator = 0;
     private int nextPlayer = 0;
+    private int kockica = 0;
 
     private Figure[][] _figures = new Figure[4][]; //igrac 0, figure [0..3]
     private List<Figure> _positions = Enumerable.Repeat(Figure.Default, 56).ToList();
@@ -156,21 +157,24 @@ public class GameState
             if (newPosition == GREEN_BASE0_POSITION
                 || newPosition == GREEN_BASE1_POSITION
                 || newPosition == GREEN_BASE2_POSITION
-                || newPosition >= GREEN_BASE3_POSITION)
+                || newPosition == GREEN_BASE3_POSITION
+                || GREEN_BASE3_POSITION > figure.Position && GREEN_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
             else if (newPosition == RED_BASE0_POSITION
                 || newPosition == RED_BASE1_POSITION
                 || newPosition == RED_BASE2_POSITION
-                || newPosition >= RED_BASE3_POSITION)
+                || newPosition == RED_BASE3_POSITION
+                || RED_BASE3_POSITION > figure.Position && RED_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
             else if (newPosition == BLUE_BASE0_POSITION
                || newPosition == BLUE_BASE1_POSITION
                || newPosition == BLUE_BASE2_POSITION
-               || newPosition >= BLUE_BASE3_POSITION)
+               || newPosition == BLUE_BASE3_POSITION
+               || BLUE_BASE3_POSITION > figure.Position && BLUE_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
@@ -191,11 +195,11 @@ public class GameState
     {
         if (diceNum == 6 && figure.InBase)
         {
-            if (_positions[12].Color == Color.RED)
+            if (_positions[20].Color == Color.RED)
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, -1, 12);
+            return new PlayerMove(figure.Id, -1, 20);
         }
         else if (diceNum != 6 && figure.InBase)
         {
@@ -208,21 +212,24 @@ public class GameState
             if (newPosition == BLUE_BASE0_POSITION
                 || newPosition == BLUE_BASE1_POSITION
                 || newPosition == BLUE_BASE2_POSITION
-                || newPosition >= BLUE_BASE3_POSITION)
+                || newPosition == BLUE_BASE3_POSITION
+                || BLUE_BASE3_POSITION > figure.Position && BLUE_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
             else if (newPosition == YELLOW_BASE0_POSITION
                 || newPosition == YELLOW_BASE1_POSITION
                 || newPosition == YELLOW_BASE2_POSITION
-                || newPosition >= YELLOW_BASE3_POSITION)
+                || newPosition == YELLOW_BASE3_POSITION
+                || YELLOW_BASE3_POSITION > figure.Position && YELLOW_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
             else if (newPosition == GREEN_BASE0_POSITION
                 || newPosition == GREEN_BASE1_POSITION
                 || newPosition == GREEN_BASE2_POSITION
-                || newPosition >= GREEN_BASE3_POSITION)
+                || newPosition == GREEN_BASE3_POSITION
+                || GREEN_BASE3_POSITION > figure.Position && GREEN_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
@@ -260,21 +267,24 @@ public class GameState
             if (newPosition == RED_BASE0_POSITION
                 || newPosition == RED_BASE1_POSITION
                 || newPosition == RED_BASE2_POSITION
-                || newPosition >= RED_BASE3_POSITION)
+                || newPosition == RED_BASE3_POSITION
+                || RED_BASE3_POSITION > figure.Position && RED_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
             else if (newPosition == BLUE_BASE0_POSITION
                 || newPosition == BLUE_BASE1_POSITION
                 || newPosition == BLUE_BASE2_POSITION
-                || newPosition >= BLUE_BASE3_POSITION)
+                || newPosition == BLUE_BASE3_POSITION
+                || BLUE_BASE3_POSITION > figure.Position && BLUE_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
             else if (newPosition == YELLOW_BASE0_POSITION
                 || newPosition == YELLOW_BASE1_POSITION
                 || newPosition == YELLOW_BASE2_POSITION
-                || newPosition >= YELLOW_BASE3_POSITION)
+                || newPosition == YELLOW_BASE3_POSITION
+                || YELLOW_BASE3_POSITION > figure.Position && YELLOW_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
@@ -311,21 +321,24 @@ public class GameState
             if (newPosition == YELLOW_BASE0_POSITION
                 || newPosition == YELLOW_BASE1_POSITION
                 || newPosition == YELLOW_BASE2_POSITION
-                || newPosition >= YELLOW_BASE3_POSITION)
+                || newPosition == YELLOW_BASE3_POSITION
+                || YELLOW_BASE3_POSITION > figure.Position && YELLOW_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
             else if (newPosition == GREEN_BASE0_POSITION
                 || newPosition == GREEN_BASE1_POSITION
                 || newPosition == GREEN_BASE2_POSITION
-                || newPosition >= GREEN_BASE3_POSITION)
+                || newPosition == GREEN_BASE3_POSITION
+                || GREEN_BASE3_POSITION > figure.Position && GREEN_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
             else if (newPosition == RED_BASE0_POSITION
                 || newPosition == RED_BASE1_POSITION
                 || newPosition == RED_BASE2_POSITION
-                || newPosition >= RED_BASE3_POSITION)
+                || newPosition == RED_BASE3_POSITION
+                || RED_BASE3_POSITION > figure.Position && RED_BASE3_POSITION < newPosition)
             {
                 newPosition = (newPosition + 4) % 56;
             }
@@ -344,12 +357,14 @@ public class GameState
 
     public bool CheckIfPlayerValid(string connectionId)
     {
-        if (_players[CurrentPlayerTurn].ConnectionId != connectionId) return false;
+        if (_players[CurrentPlayerTurn % 4].ConnectionId != connectionId) return false;
         return true;
     }
-    public void UpdateGameState(PlayerMove move)
+    public Action UpdateGameState(PlayerMove move)
     {
-        Figure figure = _figures[CurrentPlayerTurn % 4][move.FigureId % 4];
+        Action retAction;
+
+        /*Figure figure = _figures[CurrentPlayerTurn % 4][move.FigureId % 4];
         if (figure.InBase)
         {
             figure.InBase = false;
@@ -362,9 +377,58 @@ public class GameState
         {
             figureAtPos.InBase = true;
             figureAtPos.Position = -1;
+
+            retAction = new FigureOnFigure(figure.)
         }
 
-        _positions[move.NewPosition] = figure;
+        _positions[move.NewPosition] = figure;*/
+
+        Figure attackingFigure = _figures[CurrentPlayerTurn % 4][move.FigureId % 4];
+        Figure attackedFigure = _positions[move.NewPosition];
+        if (attackingFigure.InBase)
+        {
+            attackingFigure.InBase = false;
+
+            if (attackedFigure == Figure.Default)
+            {
+                _positions[move.NewPosition] = attackingFigure;
+                retAction = new BaseFigureOnEmptyField(attackingFigure.Id, move.NewPosition);
+                attackingFigure.Position = move.NewPosition;
+                return retAction;
+            }
+            else
+            { 
+                _positions[move.NewPosition] = attackingFigure;
+                retAction = new BaseFigureOnNonEmptyField(attackedFigure.Position, attackedFigure.Id, attackingFigure.Id, move.NewPosition);
+                attackingFigure.Position = move.NewPosition;
+                attackedFigure.InBase = true;
+                attackedFigure.Position = -1;
+                return retAction;
+            }
+        }
+        else
+        {
+            if (attackedFigure == Figure.Default)
+            {
+                _positions[move.OldPosition] = Figure.Default;
+                _positions[move.NewPosition] = attackingFigure;
+                retAction = new FigureOnEmptyField(attackingFigure.Position, move.NewPosition);
+                attackingFigure.Position = move.NewPosition;
+                return retAction;
+            }
+            else
+            {
+                _positions[move.NewPosition] = attackingFigure;
+                _positions[move.OldPosition] = Figure.Default;
+                retAction = new FigureOnFigure(attackedFigure.Position, attackedFigure.Id, attackingFigure.Position, move.NewPosition);
+                attackedFigure.InBase = true;
+                attackedFigure.Position = -1;
+                attackingFigure.Position = move.NewPosition;
+                return retAction;
+            }
+        }
+
+        
 
     }
 }

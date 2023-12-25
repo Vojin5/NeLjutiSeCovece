@@ -1,6 +1,7 @@
 ﻿using Back_End.SignalR.Hubs;
 using Back_End.SignalR.Models;
 using Microsoft.AspNetCore.SignalR;
+using Action = Back_End.SignalR.Models.Action;
 
 namespace Back_End.SignalR.Services;
 public class ActiveGames : IActiveGames
@@ -53,7 +54,9 @@ public class ActiveGames : IActiveGames
         {
             diceNum = 1;
         }
+        if (diceNum == 4 || diceNum == 5) diceNum = 6;
 
+        diceNum = 6;
         _hubContext.Clients.Clients(connectionIds).SendAsync("handleDiceNumber", diceNum);
         
 
@@ -76,8 +79,8 @@ public class ActiveGames : IActiveGames
         List<string> connectionIds = new(4);
         game.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
 
-        game.UpdateGameState(move);
-        _hubContext.Clients.Clients(connectionIds).SendAsync("handlePlayerMove", move);
+        Action action = game.UpdateGameState(move);
+        _hubContext.Clients.Clients(connectionIds).SendAsync("handlePlayerMove", action);
         _hubContext.Clients.Clients(game.Players[game.NextPlayerTurnId].ConnectionId).SendAsync("handleMyTurn");
 
     }
