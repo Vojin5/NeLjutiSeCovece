@@ -27,7 +27,6 @@ public class GameLobby : IGameLobby
 
     public void UpdateLobby()
     {
-        Console.WriteLine("MOZE");
         _playerConnectionIds.Clear();
         _players.ForEach(p =>
         {

@@ -13,6 +13,8 @@ export class GameTable{
         this.connection.on("handleMyTurn", async () => await this.handleMyTurn());
         this.connection.on("handleStartDiceAnimation", () => this.handleStartDiceAnimation())
         this.connection.on("handleDiceNumber", (diceNum) => this.handleDiceNumber(diceNum));
+        this.connection.on("handlePossibleMoves", async (moves) => await this.handlePossibleMoves(moves));
+        this.connection.on("handlePlayerMove", (move) => this.handlePlayerMove(move));
 
         this.yellowUserAvatar = document.querySelector(".yellow-user-avatar");
         this.yellowUserUsername = document.querySelector(".yellow-user-username");
@@ -51,13 +53,23 @@ export class GameTable{
 
     handleStartDiceAnimation() {
         this.dice.animateDice();
-        
     }
 
     handleDiceNumber(diceNum) {
         setTimeout(() => {
             this.dice.stopAnimation(diceNum);
         }, 2000);
+    }
+
+    async handlePossibleMoves(moves) {
+        console.log(moves);
+        await this.connection.invoke("MovePlayed", this.gameID, moves[0]);
+
+    }
+
+    handlePlayerMove(move) {
+        console.log("Igrac je odigrao potez ");
+        console.log(move);
     }
 
     
