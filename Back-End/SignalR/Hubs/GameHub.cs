@@ -56,7 +56,7 @@ public class GameHub : Hub
     {
         lock (_gameLock)
         {
-            _games.DiceThrown(gameId);
+            _games.DiceThrown(gameId, Context.ConnectionId);
         }
         
     }

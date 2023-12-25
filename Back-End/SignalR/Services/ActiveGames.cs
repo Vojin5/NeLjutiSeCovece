@@ -33,10 +33,13 @@ public class ActiveGames : IActiveGames
     }
 
 
-    public void DiceThrown(int gameId)
+    public void DiceThrown(int gameId, string connectionId)
     {
         
         GameState game = _activeGames[gameId];
+
+        //Za slucaj da pokusa da baca neko ko nije na redu
+        if (!game.CheckIfPlayerValid(connectionId)) return;
 
         List<string> connectionIds = new(4);
         game.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
@@ -67,7 +70,7 @@ public class ActiveGames : IActiveGames
 
     public void MovePlayed(int gameId, PlayerMove move)
     {
-        Console.WriteLine("ODIGRAVA SE POTEZ");
+        Console.WriteLine("ODIGRAVA SE POTEZ " + move.FigureId + " " + move.NewPosition);
         GameState game = _activeGames[gameId];
 
         List<string> connectionIds = new(4);
