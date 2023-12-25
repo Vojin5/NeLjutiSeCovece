@@ -342,16 +342,26 @@ public class GameState
         }
     }
 
+    public bool CheckIfPlayerValid(string connectionId)
+    {
+        if (_players[CurrentPlayerTurn].ConnectionId != connectionId) return false;
+        return true;
+    }
     public void UpdateGameState(PlayerMove move)
     {
         Figure figure = _figures[CurrentPlayerTurn % 4][move.FigureId % 4];
-        _positions[figure.Position] = Figure.Default;
-        figure.Position = move.NewPosition;
+        if (figure.InBase)
+        {
+            figure.InBase = false;
+        }
 
+        figure.Position = move.NewPosition;
         Figure figureAtPos = _positions[move.NewPosition];
-        if (figureAtPos != null)
+
+        if (figureAtPos != Figure.Default)
         {
             figureAtPos.InBase = true;
+            figureAtPos.Position = -1;
         }
 
         _positions[move.NewPosition] = figure;
