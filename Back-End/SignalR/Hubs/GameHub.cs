@@ -85,7 +85,6 @@ public class GameHub : Hub
     {
         lock (_gameLock)
         {
-            Console.WriteLine("IGRAC IZLAZI!");
             PlayerInfo player = _players.RemovePlayer(Context.ConnectionId);
             _lobby.EnsureThatPlayerIsNotInLobby(player);
             _lobby.UpdateLobby();

@@ -56,8 +56,8 @@ public class GameState
     //props
     public List<PlayerInfo> Players { get => _players; set => _players = value; }
     public int Id { get; set; } = IdGenerator++;
-    public int CurrentPlayerTurn { get => CurrentPlayerTurn % 4; set => CurrentPlayerTurn = value % 4; }
-    public int NextPlayerTurnId { get => CurrentPlayerTurn++; }
+    public int CurrentPlayerTurn { get; set; }
+    public int NextPlayerTurnId { get => ++CurrentPlayerTurn % 4; }
 
     public GameState(List<PlayerInfo> players)
     {
@@ -98,9 +98,10 @@ public class GameState
 
     }
 
-    public List<PlayerMove> GeneratePossiblePlayerMoves(int currentPlayerTurn, int diceNum)
+    public List<PlayerMove> GeneratePossiblePlayerMoves(int diceNum)
     {
-        Figure[] playerFigures = _figures[currentPlayerTurn];
+        Console.WriteLine(CurrentPlayerTurn % 4);
+        Figure[] playerFigures = _figures[CurrentPlayerTurn % 4];
         List<PlayerMove> possibleMoves = new();
 
         for (int i = 0; i < 4; i++)
@@ -142,7 +143,11 @@ public class GameState
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, 48);
+            return new PlayerMove(figure.Id, -1, 48);
+        }
+        else if (diceNum != 6 && figure.InBase)
+        {
+            return null;
         }
         else
         {
@@ -169,12 +174,16 @@ public class GameState
             {
                 newPosition = (newPosition + 4) % 56;
             }
+            else if (figure.Position < YELLOW_BASE3_POSITION && newPosition > YELLOW_BASE3_POSITION)
+            {
+                return null;
+            }
 
             if (_positions[newPosition].Color == Color.YELLOW)
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, newPosition);
+            return new PlayerMove(figure.Id, figure.Position, newPosition);
         }
 
     }
@@ -186,7 +195,11 @@ public class GameState
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, 12);
+            return new PlayerMove(figure.Id, -1, 12);
+        }
+        else if (diceNum != 6 && figure.InBase)
+        {
+            return null;
         }
         else
         {
@@ -213,12 +226,16 @@ public class GameState
             {
                 newPosition = (newPosition + 4) % 56;
             }
+            else if (figure.Position < RED_BASE3_POSITION && newPosition > RED_BASE3_POSITION)
+            {
+                return null;
+            }
 
             if (_positions[newPosition].Color == Color.RED)
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, newPosition);
+            return new PlayerMove(figure.Id, figure.Position, newPosition);
         }
 
     }
@@ -230,7 +247,11 @@ public class GameState
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, 6);
+            return new PlayerMove(figure.Id, -1, 6);
+        }
+        else if (diceNum != 6 && figure.InBase)
+        {
+            return null;
         }
         else
         {
@@ -257,12 +278,16 @@ public class GameState
             {
                 newPosition = (newPosition + 4) % 56;
             }
+            else if (figure.Position < GREEN_BASE3_POSITION && newPosition > GREEN_BASE3_POSITION)
+            {
+                return null;
+            }
 
             if (_positions[newPosition].Color == Color.GREEN)
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, newPosition);
+            return new PlayerMove(figure.Id, figure.Position, newPosition);
         }
     }
     private PlayerMove GenerateBlueFigureMove(Figure figure, int diceNum)
@@ -273,7 +298,11 @@ public class GameState
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, 34);
+            return new PlayerMove(figure.Id, -1, 34);
+        }
+        else if (diceNum != 6 && figure.InBase)
+        {
+            return null;
         }
         else
         {
@@ -300,18 +329,22 @@ public class GameState
             {
                 newPosition = (newPosition + 4) % 56;
             }
+            else if (figure.Position < BLUE_BASE3_POSITION && newPosition > BLUE_BASE3_POSITION)
+            {
+                return null;
+            }
 
             if (_positions[newPosition].Color == Color.BLUE)
             {
                 return null;
             }
-            return new PlayerMove(figure.Id, newPosition);
+            return new PlayerMove(figure.Id, figure.Position, newPosition);
         }
     }
 
     public void UpdateGameState(PlayerMove move)
     {
-        Figure figure = _figures[CurrentPlayerTurn][move.FigureId];
+        Figure figure = _figures[CurrentPlayerTurn % 4][move.FigureId % 4];
         _positions[figure.Position] = Figure.Default;
         figure.Position = move.NewPosition;
 
