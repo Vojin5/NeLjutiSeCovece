@@ -29,7 +29,10 @@ builder.Services.AddCors(options =>
         .AllowCredentials();
     });
 });
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 
 builder.Services.AddSingleton<IGameLobby, GameLobby>();
 builder.Services.AddSingleton<IActiveGames, ActiveGames>();

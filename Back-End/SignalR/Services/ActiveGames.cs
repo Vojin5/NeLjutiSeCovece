@@ -9,14 +9,17 @@ public class ActiveGames : IActiveGames
     private Dictionary<int, GameState> _activeGames = new();
     private readonly IHubContext<GameHub> _hubContext;
 
+    private static int GAME_ID_GENERATOR = 0;
+
     public ActiveGames(IHubContext<GameHub> hubContext)
     {
         _hubContext = hubContext;
     }
     public void StartGame(IGameLobby lobby)
     {
-        GameState game = new(lobby.Players);
-        _activeGames.Add(game.Id, game);
+        int gameId = GAME_ID_GENERATOR++;
+        GameState game = new(lobby.Players, gameId);
+        _activeGames.Add(gameId, game);
 
 
         List<string> connectionIds = new(4);
@@ -33,10 +36,17 @@ public class ActiveGames : IActiveGames
         //player.InGame = false;
     }
 
+    public void EnsureThatPlayerIsNotInGame(PlayerInfo player)
+    {
+        if (!player.InGame) return;
+
+        player.InGame = false;
+    }
+
 
     public void DiceThrown(int gameId, string connectionId)
     {
-        
+
         GameState game = _activeGames[gameId];
 
         //Za slucaj da pokusa da baca neko ko nije na redu
@@ -54,14 +64,14 @@ public class ActiveGames : IActiveGames
         {
             diceNum = 1;
         }
-
+        diceNum = 6;
         _hubContext.Clients.Clients(connectionIds).SendAsync("handleDiceNumber", diceNum);
         
 
         List<PlayerMove> moves = game.GeneratePossiblePlayerMoves(diceNum);
         Console.WriteLine("BROJ MOGUCIH POTEZA JE " + moves.Count);
         if (moves.Count == 0)
-        {
+        {   
             _hubContext.Clients.Clients(game.Players[game.NextPlayerTurnId].ConnectionId).SendAsync("handleMyTurn");
             return;
         }

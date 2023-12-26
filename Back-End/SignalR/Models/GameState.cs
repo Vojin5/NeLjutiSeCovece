@@ -48,22 +48,28 @@ public class GameState
     //members
     private List<PlayerInfo> _players;
     private static int IdGenerator = 0;
-    private int nextPlayer = 0;
-    private int kockica = 0;
 
     private Figure[][] _figures = new Figure[4][]; //igrac 0, figure [0..3]
     private List<Figure> _positions = Enumerable.Repeat(Figure.Default, 56).ToList();
 
     //props
     public List<PlayerInfo> Players { get => _players; set => _players = value; }
-    public int Id { get; set; } = IdGenerator++;
+    public int Id { get; set; }
     public int CurrentPlayerTurn { get; set; }
     public int NextPlayerTurnId { get => ++CurrentPlayerTurn % 4; }
 
-    public GameState(List<PlayerInfo> players)
+    public GameState(List<PlayerInfo> players, int gameId)
     {
         _players = players;
+        Id = gameId;
         CurrentPlayerTurn = 0;
+
+        _players.ForEach(p =>
+        {
+            p.InGame = true;
+            p.GameId = gameId;
+        });
+
         for (int i = 0; i < 4; i++)
         {
             _figures[i] = new Figure[4];
@@ -74,7 +80,7 @@ public class GameState
                 _figures[i][2] = new Figure(YELLOW_FIGURE_ID2, Color.YELLOW);
                 _figures[i][3] = new Figure(YELLOW_FIGURE_ID3, Color.YELLOW);
             }
-            else if (i == 1) 
+            else if (i == 1)
             {
                 _figures[i][0] = new Figure(GREEN_FIGURE_ID0, Color.GREEN);
                 _figures[i][1] = new Figure(GREEN_FIGURE_ID1, Color.GREEN);
@@ -154,7 +160,20 @@ public class GameState
         {
             int newPosition = (figure.Position + diceNum) % 56;
 
-            if (newPosition == GREEN_BASE0_POSITION
+            if (figure.InHome &&
+                (newPosition == YELLOW_BASE0_POSITION
+                || newPosition == YELLOW_BASE1_POSITION
+                || newPosition == YELLOW_BASE2_POSITION
+                || newPosition == YELLOW_BASE3_POSITION)
+                && _positions[newPosition].Color != Color.YELLOW)
+            {
+                return new PlayerMove(figure.Id, figure.Position, newPosition);
+            }
+            else if (figure.InHome && newPosition > YELLOW_BASE3_POSITION)
+            {
+                return null;
+            }
+            else if (newPosition == GREEN_BASE0_POSITION
                 || newPosition == GREEN_BASE1_POSITION
                 || newPosition == GREEN_BASE2_POSITION
                 || newPosition == GREEN_BASE3_POSITION
@@ -209,7 +228,20 @@ public class GameState
         {
             int newPosition = (figure.Position + diceNum) % 56;
 
-            if (newPosition == BLUE_BASE0_POSITION
+            if (figure.InHome &&
+                (newPosition == RED_BASE0_POSITION
+                || newPosition == RED_BASE1_POSITION
+                || newPosition == RED_BASE2_POSITION
+                || newPosition == RED_BASE3_POSITION)
+                && _positions[newPosition].Color != Color.RED)
+            {
+                return new PlayerMove(figure.Id, figure.Position, newPosition);
+            }
+            else if (figure.InHome && newPosition > RED_BASE3_POSITION)
+            {
+                return null;
+            }
+            else if (newPosition == BLUE_BASE0_POSITION
                 || newPosition == BLUE_BASE1_POSITION
                 || newPosition == BLUE_BASE2_POSITION
                 || newPosition == BLUE_BASE3_POSITION
@@ -264,7 +296,20 @@ public class GameState
         {
             int newPosition = (figure.Position + diceNum) % 56;
 
-            if (newPosition == RED_BASE0_POSITION
+            if (figure.InHome &&
+                (newPosition == GREEN_BASE0_POSITION
+                || newPosition == GREEN_BASE1_POSITION
+                || newPosition == GREEN_BASE2_POSITION
+                || newPosition == GREEN_BASE3_POSITION)
+                && _positions[newPosition].Color != Color.GREEN)
+            {
+                return new PlayerMove(figure.Id, figure.Position, newPosition);
+            }
+            else if (figure.InHome && newPosition > GREEN_BASE3_POSITION)
+            {
+                return null;
+            }
+            else if (newPosition == RED_BASE0_POSITION
                 || newPosition == RED_BASE1_POSITION
                 || newPosition == RED_BASE2_POSITION
                 || newPosition == RED_BASE3_POSITION
@@ -297,6 +342,8 @@ public class GameState
             {
                 return null;
             }
+
+
             return new PlayerMove(figure.Id, figure.Position, newPosition);
         }
     }
@@ -318,7 +365,20 @@ public class GameState
         {
             int newPosition = (figure.Position + diceNum) % 56;
 
-            if (newPosition == YELLOW_BASE0_POSITION
+            if (figure.InHome &&
+                (newPosition == BLUE_BASE0_POSITION
+                || newPosition == BLUE_BASE1_POSITION
+                || newPosition == BLUE_BASE2_POSITION
+                || newPosition == BLUE_BASE3_POSITION)
+                && _positions[newPosition].Color != Color.BLUE)
+            {
+                return new PlayerMove(figure.Id, figure.Position, newPosition);
+            }
+            else if (figure.InHome && newPosition > BLUE_BASE3_POSITION)
+            {
+                return null;
+            }
+            else if (newPosition == YELLOW_BASE0_POSITION
                 || newPosition == YELLOW_BASE1_POSITION
                 || newPosition == YELLOW_BASE2_POSITION
                 || newPosition == YELLOW_BASE3_POSITION
@@ -378,7 +438,7 @@ public class GameState
                 return retAction;
             }
             else
-            { 
+            {
                 _positions[move.NewPosition] = attackingFigure;
                 retAction = new BaseFigureOnNonEmptyField(attackedFigure.Position, attackedFigure.Id, attackingFigure.Id, move.NewPosition);
                 attackingFigure.Position = move.NewPosition;
@@ -395,6 +455,7 @@ public class GameState
                 _positions[move.NewPosition] = attackingFigure;
                 retAction = new FigureOnEmptyField(attackingFigure.Position, move.NewPosition);
                 attackingFigure.Position = move.NewPosition;
+                CheckIfNewPositionIsInHome(attackingFigure);
                 return retAction;
             }
             else
@@ -408,9 +469,55 @@ public class GameState
                 return retAction;
             }
         }
+    }
+    public void CheckIfNewPositionIsInHome(Figure figure)
+    {
+        if (figure.Color == Color.YELLOW)
+        {
+            if (figure.Position == YELLOW_BASE0_POSITION
+                || figure.Position == YELLOW_BASE1_POSITION
+                || figure.Position == YELLOW_BASE2_POSITION
+                || figure.Position == YELLOW_BASE3_POSITION)
+            {
+                figure.InHome = true;
+            }
+        }
+        else if (figure.Color == Color.GREEN)
+        {
+            if (figure.Position == GREEN_BASE0_POSITION
+                || figure.Position == GREEN_BASE1_POSITION
+                || figure.Position == GREEN_BASE2_POSITION
+                || figure.Position == GREEN_BASE3_POSITION)
+            {
+                figure.InHome = true;
+            }
+        }
+        else if (figure.Color == Color.RED)
+        {
+            if (figure.Position == RED_BASE0_POSITION
+                || figure.Position == RED_BASE1_POSITION
+                || figure.Position == RED_BASE2_POSITION
+                || figure.Position == RED_BASE3_POSITION)
+            {
+                figure.InHome = true;
+            }
+        }
+        else if (figure.Color == Color.BLUE)
+        {
+            if (figure.Position == BLUE_BASE0_POSITION
+                || figure.Position == BLUE_BASE1_POSITION
+                || figure.Position == BLUE_BASE2_POSITION
+                || figure.Position == BLUE_BASE3_POSITION)
+            {
+                figure.InHome = true;
+            }
+        }
+        if (figure.InHome)
+        {
+            Console.WriteLine("FIGURA BOJE " + figure.Color + " je u home");
+            Console.WriteLine("POZICIJA JOJ JE " + figure.Position);
 
-        
-
+        }
     }
 }
 
@@ -418,8 +525,8 @@ public enum Color
 {
     YELLOW,
     GREEN,
-    BLUE,
     RED,
+    BLUE,
     WHITE
 }
 

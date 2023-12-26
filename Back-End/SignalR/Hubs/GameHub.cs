@@ -87,7 +87,7 @@ public class GameHub : Hub
         {
             PlayerInfo player = _players.RemovePlayer(Context.ConnectionId);
             _lobby.EnsureThatPlayerIsNotInLobby(player);
-            _lobby.UpdateLobby();
+            _games.EnsureThatPlayerIsNotInGame(player);
         }
 
         return base.OnDisconnectedAsync(exception);
