@@ -53,6 +53,7 @@ export class GameTable{
         this.dice.addClickListener(async () => {
             await this.connection.invoke("DiceThrown", this.gameID);
             this.dice.toggleVisibility();
+            this.dice.stopBounce();
         });
         
     }
@@ -63,6 +64,7 @@ export class GameTable{
         //     this.dice.toggleVisibility();    
         // }, 2000);
         this.dice.toggleVisibility();
+        this.dice.bounce();
     }
 
     handleStartDiceAnimation() {
@@ -79,24 +81,97 @@ export class GameTable{
 
     async handlePossibleMoves(moves) {
         console.log(moves);
-        const moveChoice = prompt();
-        await this.connection.invoke("MovePlayed", this.gameID, moves[Number.parseInt(moveChoice)]);
-    }
-
-    handlePlayerMove(move) {
-        // console.log("Igrac je odigrao potez ");
-        // console.log(move);
         
-        // if(this.lista[move.newPosition] != null)
-        // {
-        //     const attackedFigure = lista[move.newPosition];
-        //     this.putInBase(attackedFigure);
-        //     this.lista[move.newPosition] = null;
+        // let moveChoice;
+        // let elements = [];
+        // for (let i = 0; i < moves.length; i++) {
+        //     let el;
+        //     const j = i;
+        //     if (moves[i].oldPosition == -1) {
+        //         el = document.getElementById("b" + moves[i].figureId);
+        //         el.classList.add("bounce");
+        //         el.addEventListener("click", async () => {
+        //             if(el.classList.contains("bounce"))
+        //             {
+        //                 let move = i;
+        //                 moveChoice = move;
+        //                 console.log(moveChoice);
+        //                 await this.connection.invoke("MovePlayed", this.gameID, moves[Number.parseInt(j)]);
+        //             }
+        //             for(let j = 0;j<elements.length;j++)
+        //             {
+        //                 elements[j].classList.remove("bounce");
+        //             }
+        //         },{once:true});
+                
+        //     }
+        //     else {
+        //         el = document.getElementById("p" + moves[i].oldPosition);
+        //         el.classList.add("bounce");
+        //         el.addEventListener("click", async () => {
+        //             if(el.classList.contains("bounce"))
+        //             {
+        //                 let move = i;
+        //                 moveChoice = move;
+        //                 console.log(moveChoice);
+        //                 await this.connection.invoke("MovePlayed", this.gameID, moves[Number.parseInt(j)]);
+        //                 console.log(j);
+        //             }
+        //             for(let j = 0;j<elements.length;j++)
+        //             {
+        //                 elements[j].classList.remove("bounce");
+        //             }
+        //         },{once:true});
+        //     }
+        //     elements.push(el);  
         // }
 
-        // this.makeMove(move);
-        // this.lista[move.newPosition] = new Figure(move.figureId,move.newPosition);
-        // this.lista[move.oldPosition] = null;
+        
+
+        // for(let i = 0;i<elements.length;i++)
+        // {
+
+        //     const clk = () => {
+
+        //         for(let j = 0;j < elements.length;j++)
+        //         {
+        //             elements
+        //         }
+        //     }
+
+
+        // }
+
+        const ev = new Event("remove");
+
+        let elements = [];
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].oldPosition == -1) {
+                elements.push(document.getElementById("b" + moves[i].figureId));
+                elements[i].classList.add("bounce");
+            }
+            else {
+                elements.push(document.getElementById("p" + moves[i].oldPosition));
+                elements[i].classList.add("bounce");
+            }
+        }
+
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].addEventListener("click", async() => {
+                for (let j = 0; j < elements.length; j++) {
+                    elements[j].classList.remove("bounce");
+                    const clonedNode = elements[j].cloneNode(true);
+                    elements[j].parentNode.replaceChild(clonedNode, elements[j]);
+                }
+                await this.connection.invoke("MovePlayed", this.gameID, moves[Number.parseInt(i)]); 
+            });
+        }
+        
+    }
+
+
+    handlePlayerMove(move) {
+        
         console.log(move);
         if (move.actionType == 0)
         {
@@ -104,8 +179,6 @@ export class GameTable{
             let dstStr = "p" + move.newPosition;
             let Src = document.body.querySelector("#"+srcStr);
             let Dst = document.body.querySelector("#"+dstStr);
-            console.log(Src);
-            console.log(Dst);
             this.animateFigure(Src,Dst,1000);
         }
         else if(move.actionType == 1)
@@ -146,33 +219,6 @@ export class GameTable{
         }
     }
 
-    makeMove(move)
-    {
-        let srcStr;
-        if(move.oldPosition == -1)
-        {
-            srcStr = "b" + move.figureId;
-        }
-        else{
-            srcStr = "p" + move.oldPosition;
-        }
-        const dstStr = "p" + move.newPosition;
-        const Src = document.body.querySelector("#" + srcStr);
-        const Dst = document.body.querySelector("#" + dstStr);
-
-        this.animateFigure(Src,Dst,1000);
-    }
-
-    putInBase(figure)
-    {
-        const bstr = "b" + figure.id;
-        const pstr = "p" + figure.position;
-        const baza = document.body.querySelector("#"+bstr);
-        const trPosition = document.body.querySelector("#"+pstr);
-        this.animateFigure(trPosition,baza,1000);
-
-        figure.position = -1;
-    }
 
     animateFigure(figureSrc,figureDst,baseTime)
     {
