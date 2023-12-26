@@ -43,6 +43,20 @@ export class Dice{
         
     }
 
+    toggleVisibility()
+    {
+        if(this.diceContainer.style.opacity == 0.5)
+        {
+            this.diceContainer.style.opacity = 1;
+            this.diceContainer.classList.remove("dice-unclickable");
+        }
+        else{
+            this.diceContainer.style.opacity = 0.5;
+            this.diceContainer.classList.add("dice-unclickable");
+        }
+        
+    }
+
     drawDice(number)
     {
         const dice = document.createElement("div");

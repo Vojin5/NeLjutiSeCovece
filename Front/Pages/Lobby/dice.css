@@ -35,3 +35,7 @@
     left: var(--left);
     transform: translateX(calc(var(--left)*-1)) translateY(calc(var(--top) * -1));
 }
+
+.dice-unclickable{
+    pointer-events: none;
+}

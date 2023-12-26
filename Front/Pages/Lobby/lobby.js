@@ -105,4 +105,7 @@ export class Lobby {
     }
 }
 
-const lobby = new Lobby();
+let lobby = new Lobby();
+
+
+

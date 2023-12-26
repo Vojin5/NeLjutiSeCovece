@@ -8,9 +8,11 @@
 }
 
 
+
+
 .table-container{
     z-index: 2;
-    background-color: #b3ca55;
+    background-color: #7e9134;
     background-image: url("https://www.transparenttextures.com/patterns/always-grey.png");
     display: flex;
     width: 100%;
@@ -47,12 +49,13 @@
     align-items: center;
 }
 
+
 .fields{
-    flex-grow: 0;
-    flex-shrink: 0;
+    box-shadow: 0 0 10px whitesmoke;
+    background-color: rgba(20,20,20,1);
     border-radius: 50%;
-    border: 1px solid black;
 }
+
 
 
 .space-between-row{
@@ -88,12 +91,10 @@
 }
 
 img{
-    flex-grow: 0;
-    flex-shrink: 0;
-    min-width: 2.2rem;
     width: 2.2rem;
     aspect-ratio: 1;
 }
+
 
 .home-row{
     flex-grow: 0;
@@ -215,17 +216,70 @@ img{
 
 
 .blue-border{
-    border: 2px solid blue;
+    border: 3px solid blue;
+    box-shadow: 0 0 10px blue;
 }
 
 .yellow-border{
-    border: 2px solid yellow;
+    border: 3px solid yellow;
+    box-shadow: 0 0 10px yellow;
 }
 
 .green-border{
-    border: 2px solid green;
+    border: 3px solid green;
+    box-shadow: 0 0 10px green;
 }
 
 .red-border{
-    border: 2px solid red;
+    border: 3px solid red;
+    box-shadow: 0 0 10px red;
+}
+
+.figure{
+    height: 50%;
+    aspect-ratio: 1;
+    width: auto;
+}
+
+.animate-source{
+    animation-name: animate-source;
+    animation-duration: 0.4s;
+    animation-direction: normal;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes animate-source {
+    0%{
+        transform: translateY(0px);
+        background-color: rgba(20,20,20,0.8);
+    }
+     50%{
+        transform: translateY(-40px);
+        background-color: rgba(20,20,20,0.6);
+    } 
+    100%{
+        transform: translate(0px);
+        background-color: rgba(20,20,20,0.1);
+    }
+}
+
+.animate-destination{
+    animation-name: animate-destination;
+    animation-duration: 0.4s;
+    animation-direction: normal;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes animate-destination{
+    0%{
+        transform: translateY(0px);
+    }
+
+    50%{
+        transform: translateY(-40px);
+    }
+
+    100%{
+        transform: translateY(0px);
+    }
 }
