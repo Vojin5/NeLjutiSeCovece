@@ -364,25 +364,6 @@ public class GameState
     {
         Action retAction;
 
-        /*Figure figure = _figures[CurrentPlayerTurn % 4][move.FigureId % 4];
-        if (figure.InBase)
-        {
-            figure.InBase = false;
-        }
-
-        figure.Position = move.NewPosition;
-        Figure figureAtPos = _positions[move.NewPosition];
-
-        if (figureAtPos != Figure.Default)
-        {
-            figureAtPos.InBase = true;
-            figureAtPos.Position = -1;
-
-            retAction = new FigureOnFigure(figure.)
-        }
-
-        _positions[move.NewPosition] = figure;*/
-
         Figure attackingFigure = _figures[CurrentPlayerTurn % 4][move.FigureId % 4];
         Figure attackedFigure = _positions[move.NewPosition];
         if (attackingFigure.InBase)

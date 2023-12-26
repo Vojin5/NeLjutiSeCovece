@@ -54,9 +54,7 @@ public class ActiveGames : IActiveGames
         {
             diceNum = 1;
         }
-        if (diceNum == 4 || diceNum == 5) diceNum = 6;
 
-        diceNum = 6;
         _hubContext.Clients.Clients(connectionIds).SendAsync("handleDiceNumber", diceNum);
         
 
