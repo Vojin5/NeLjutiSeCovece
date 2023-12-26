@@ -6,7 +6,7 @@ export class Dice{
         this.dicePositionMatrix;
         this.diceContainer = document.querySelector(".dice-container");
         this.diceNumber = 1;
-        this.interval = null;
+        this.intervalAnimation = null;
 
         //func
         this.setListeners();
@@ -16,7 +16,7 @@ export class Dice{
     //Animira kockicu sve dok se ne prosledi funkcija da stane
     animateDice()
     {
-        this.interval = setInterval(() => {
+        this.intervalAnimation = setInterval(() => {
             this.randomizeDice();
         }, 50);
     }
@@ -24,7 +24,7 @@ export class Dice{
     //Zaustavlja animaciju i postavlja konacnu vrednost kocke
     stopAnimation(number)
     {
-        clearInterval(this.interval);
+        clearInterval(this.intervalAnimation);
         this.diceContainer.removeChild(document.querySelector(".dice"));
         this.drawDice(number);
         this.diceNumber = number;
@@ -55,6 +55,16 @@ export class Dice{
             this.diceContainer.classList.add("dice-unclickable");
         }
         
+    }
+
+    bounce()
+    {
+        this.diceContainer.classList.add("bounce-dice");
+    }
+
+    stopBounce()
+    {
+        this.diceContainer.classList.remove("bounce-dice");
     }
 
     drawDice(number)
