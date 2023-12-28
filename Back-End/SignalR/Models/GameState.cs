@@ -2,6 +2,7 @@
 
 public class GameState
 {
+    #region
     private static readonly int BLUE_BASE0_POSITION = 30;
     private static readonly int BLUE_BASE1_POSITION = 31;
     private static readonly int BLUE_BASE2_POSITION = 32;
@@ -22,8 +23,7 @@ public class GameState
     private static readonly int RED_BASE2_POSITION = 18;
     private static readonly int RED_BASE3_POSITION = 19;
 
-    /// <summary>
-    /// </summary>
+    //
 
     private static readonly int YELLOW_FIGURE_ID0 = 0;
     private static readonly int YELLOW_FIGURE_ID1 = 1;
@@ -44,10 +44,11 @@ public class GameState
     private static readonly int BLUE_FIGURE_ID1 = 13;
     private static readonly int BLUE_FIGURE_ID2 = 14;
     private static readonly int BLUE_FIGURE_ID3 = 15;
-
+    #endregion
     //members
     private List<PlayerInfo> _players;
-    private static int IdGenerator = 0;
+    private int _currentPlayerTurn = 0;
+    private int _activePlayers = 0;
 
     private Figure[][] _figures = new Figure[4][]; //igrac 0, figure [0..3]
     private List<Figure> _positions = Enumerable.Repeat(Figure.Default, 56).ToList();
@@ -55,14 +56,16 @@ public class GameState
     //props
     public List<PlayerInfo> Players { get => _players; set => _players = value; }
     public int Id { get; set; }
-    public int CurrentPlayerTurn { get; set; }
-    public int NextPlayerTurnId { get => ++CurrentPlayerTurn % 4; }
+    public int CurrentPlayerTurn { get => _currentPlayerTurn; set => _currentPlayerTurn = value % MaximumNumberOfPlayers; }
+    public int NextPlayerTurnId { get { ++CurrentPlayerTurn; return _currentPlayerTurn; } }
+    public int MaximumNumberOfPlayers { get => 4; }
+    public int ActivePlayers { get => _activePlayers; set => _activePlayers = value; }
 
     public GameState(List<PlayerInfo> players, int gameId)
     {
         _players = players;
         Id = gameId;
-        CurrentPlayerTurn = 0;
+        _activePlayers = MaximumNumberOfPlayers;
 
         _players.ForEach(p =>
         {
@@ -107,8 +110,7 @@ public class GameState
 
     public List<PlayerMove> GeneratePossiblePlayerMoves(int diceNum)
     {
-        Console.WriteLine(CurrentPlayerTurn % 4);
-        Figure[] playerFigures = _figures[CurrentPlayerTurn % 4];
+        Figure[] playerFigures = _figures[CurrentPlayerTurn];
         List<PlayerMove> possibleMoves = new();
 
         for (int i = 0; i < 4; i++)
@@ -141,7 +143,6 @@ public class GameState
         return possibleMoves;
 
     }
-    //ostale su provere za baze samih boja i da li se na putu nalazi figura iste boje
     private PlayerMove GenerateYellowFigureMove(Figure figure, int diceNum)
     {
         if (diceNum == 6 && figure.InBase)
@@ -417,14 +418,14 @@ public class GameState
 
     public bool CheckIfPlayerValid(string connectionId)
     {
-        if (_players[CurrentPlayerTurn % 4].ConnectionId != connectionId) return false;
+        if (_players[CurrentPlayerTurn].ConnectionId != connectionId) return false;
         return true;
     }
     public Action UpdateGameState(PlayerMove move)
     {
-        Action retAction;
+        Action retAction;   
 
-        Figure attackingFigure = _figures[CurrentPlayerTurn % 4][move.FigureId % 4];
+        Figure attackingFigure = _figures[CurrentPlayerTurn][move.FigureId % 4];
         Figure attackedFigure = _positions[move.NewPosition];
         if (attackingFigure.InBase)
         {
@@ -512,12 +513,10 @@ public class GameState
                 figure.InHome = true;
             }
         }
-        if (figure.InHome)
-        {
-            Console.WriteLine("FIGURA BOJE " + figure.Color + " je u home");
-            Console.WriteLine("POZICIJA JOJ JE " + figure.Position);
-
-        }
+    }
+    public bool IsGameOver()
+    {
+        return true;
     }
 }
 

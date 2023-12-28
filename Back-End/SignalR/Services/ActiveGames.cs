@@ -25,7 +25,7 @@ public class ActiveGames : IActiveGames
         List<string> connectionIds = new(4);
         lobby.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
         _hubContext.Clients.Clients(connectionIds).SendAsync("handleGameStart", game.Id);
-        _hubContext.Clients.Clients(game.Players[game.CurrentPlayerTurn % 4].ConnectionId).SendAsync("handleMyTurn");
+        _hubContext.Clients.Clients(game.Players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handleMyTurn");
         lobby.Clear();
     }
 
@@ -41,8 +41,24 @@ public class ActiveGames : IActiveGames
         if (!player.InGame) return;
 
         player.InGame = false;
-    }
 
+        GameState game = _activeGames[player.GameId];
+        game.ActivePlayers--;
+
+        List<PlayerInfo> players = game.Players;
+
+        List<String> connectionIds = players.Where(p => p.InGame).Select(p => p.ConnectionId).ToList();
+
+        if (game.ActivePlayers == 0)
+        {
+
+        }
+
+        if (players[game.CurrentPlayerTurn].ConnectionId == player.ConnectionId)
+        {
+            
+        }
+    }
 
     public void DiceThrown(int gameId, string connectionId)
     {

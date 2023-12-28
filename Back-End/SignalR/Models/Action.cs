@@ -3,7 +3,6 @@
 public class Action
 {
     public int ActionType { get; set; }
-
     public Action(int actionType)
     {
         ActionType = actionType;
