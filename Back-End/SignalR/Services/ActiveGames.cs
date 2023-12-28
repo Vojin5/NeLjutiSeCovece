@@ -64,7 +64,6 @@ public class ActiveGames : IActiveGames
         {
             diceNum = 1;
         }
-        diceNum = 6;
         _hubContext.Clients.Clients(connectionIds).SendAsync("handleDiceNumber", diceNum);
         
 

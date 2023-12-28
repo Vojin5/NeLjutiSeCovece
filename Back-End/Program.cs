@@ -2,6 +2,8 @@ using Back_End.Models;
 using Back_End.SignalR.Hubs;
 using Microsoft.EntityFrameworkCore;
 using Back_End.SignalR.Services;
+using Back_End.IRepository;
+using Back_End.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,10 @@ builder.Services.AddSignalR(options =>
 builder.Services.AddSingleton<IGameLobby, GameLobby>();
 builder.Services.AddSingleton<IActiveGames, ActiveGames>();
 builder.Services.AddSingleton<IOnlinePlayers, OnlinePlayers>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMatchHistoryRepository, MatchHistoryRepository>();
+builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 
 var app = builder.Build();
 

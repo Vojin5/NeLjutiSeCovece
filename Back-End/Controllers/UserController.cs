@@ -1,44 +1,41 @@
-﻿using Back_End.Models;
+﻿using Back_End.IRepository;
+using Back_End.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    public Context Context { get; set; }
-    public UserController(Context context)
+    public IUserRepository UserRepository { get; set; }
+    public UserController(IUserRepository userRepository)
     {
-        Context = context;
+        UserRepository = userRepository;
     }
 
     [HttpPost("register")]
     public async Task<ActionResult> RegisterUser([FromBody] UserRegisterModel user)
     {
-        Console.WriteLine(user.ImageBase64Encoded);
-        var existingUser = Context.Users
-            .Where(u => u.Username == user.Username)
-            .FirstOrDefault();
+        var existingUser = await UserRepository.GetUserByUsernameAsync(user.Username);
 
         if (existingUser != null)
         {
             return BadRequest();
         }
 
-        User newUser = new User();
-        newUser.Username = user.Username;
-        newUser.Email = user.Email;
-        newUser.Elo = 0;
-        newUser.Image = Convert.FromBase64String(user.ImageBase64Encoded);
-
         string salt = BCrypt.Net.BCrypt.GenerateSalt();
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
 
-        newUser.Password = passwordHash;
-        newUser.PasswordSalt = salt;
+        User newUser = new User()
+        {
+            Username = user.Username,
+            Email = user.Email,
+            Password = passwordHash,
+            PasswordSalt = salt,
+            Elo = 0,
+            Image = Convert.FromBase64String(user.ImageBase64Encoded)
+        };
 
-        await Context.Users.AddAsync(newUser);
-        await Context.SaveChangesAsync();
+        await UserRepository.AddUserAsync(newUser);
 
         return Ok();
 
@@ -47,9 +44,7 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult> LoginUser([FromBody] UserLoginModel user)
     {
-        var expectedUser = await Context.Users
-            .Where(u => u.Username == user.Username)
-            .FirstOrDefaultAsync();
+        var expectedUser = await UserRepository.GetUserByUsernameAsync(user.Username);
 
         if (expectedUser == null)
         {
@@ -62,12 +57,12 @@ public class UserController : ControllerBase
             return BadRequest();
         }
 
-        return Ok(new
+        return Ok(new UserLoginDTO
         {
-            expectedUser.Id,
-            expectedUser.Username,
-            expectedUser.Elo,
-            expectedUser.Image
+            Id = expectedUser.Id,
+            Username = expectedUser.Username,
+            Elo = expectedUser.Elo,
+            Image = expectedUser.Image
         });
     }
 }
