@@ -56,7 +56,7 @@ public class GameHub : Hub
     {
         lock (_gameLock)
         {
-            _games.DiceThrown(gameId);
+            _games.DiceThrown(gameId, Context.ConnectionId);
         }
         
     }
@@ -87,7 +87,7 @@ public class GameHub : Hub
         {
             PlayerInfo player = _players.RemovePlayer(Context.ConnectionId);
             _lobby.EnsureThatPlayerIsNotInLobby(player);
-            _lobby.UpdateLobby();
+            _games.EnsureThatPlayerIsNotInGame(player);
         }
 
         return base.OnDisconnectedAsync(exception);

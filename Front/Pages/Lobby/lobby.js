@@ -107,18 +107,5 @@ export class Lobby {
 
 let lobby = new Lobby();
 
-let y1 = document.getElementById("-1");
-let y2 = document.getElementById("0");
-y1.addEventListener("click" , () => {
-    let tmp = y1.src;
-    y1.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-    y2.src = tmp;
-});
-
-y2.addEventListener("click" , () => {
-    let tmp = y2.src;
-    y2.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-    y1.src = tmp;
-})
 
 

@@ -41,6 +41,10 @@ public class GameLobby : IGameLobby
         if (player.InLobby)
         {
             _players.Remove(player);
+            if (_players.Count != 0)
+            {
+                UpdateLobby();
+            }
         }
     }
 

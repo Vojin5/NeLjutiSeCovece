@@ -2,13 +2,15 @@ using Back_End.Models;
 using Back_End.SignalR.Hubs;
 using Microsoft.EntityFrameworkCore;
 using Back_End.SignalR.Services;
+using Back_End.IRepository;
+using Back_End.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.WebHost.ConfigureKestrel(options =>
-//{
-//    options.Listen(System.Net.IPAddress.Parse("192.168.28.8"), 5295);
-//});
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(System.Net.IPAddress.Parse("10.66.98.32"), 5295);
+});
 
 // Add services to the container.
 
@@ -29,11 +31,18 @@ builder.Services.AddCors(options =>
         .AllowCredentials();
     });
 });
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 
 builder.Services.AddSingleton<IGameLobby, GameLobby>();
 builder.Services.AddSingleton<IActiveGames, ActiveGames>();
 builder.Services.AddSingleton<IOnlinePlayers, OnlinePlayers>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMatchHistoryRepository, MatchHistoryRepository>();
+builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 
 var app = builder.Build();
 

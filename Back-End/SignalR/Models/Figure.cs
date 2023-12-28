@@ -27,5 +27,6 @@ public class Figure
         Color = color;
         InBase = true;
         InHome = false;
+        Position = -1;
     }
 }

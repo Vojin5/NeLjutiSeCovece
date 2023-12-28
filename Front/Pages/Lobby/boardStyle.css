@@ -5,9 +5,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition-property: background-image;
-    transition-duration: 2s;
-    transition-delay: 0.5s;
 }
 
 
@@ -242,4 +239,66 @@ img{
     height: 50%;
     aspect-ratio: 1;
     width: auto;
+}
+
+.animate-source{
+    animation-name: animate-source;
+    animation-duration: 0.4s;
+    animation-direction: normal;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes animate-source {
+    0%{
+        transform: translateY(0px);
+        background-color: rgba(20,20,20,0.8);
+    }
+     50%{
+        transform: translateY(-40px);
+        background-color: rgba(20,20,20,0.6);
+    } 
+    100%{
+        transform: translate(0px);
+        background-color: rgba(20,20,20,0.1);
+    }
+}
+
+.animate-destination{
+    animation-name: animate-destination;
+    animation-duration: 0.4s;
+    animation-direction: normal;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes animate-destination{
+    0%{
+        transform: translateY(0px);
+    }
+
+    50%{
+        transform: translateY(-40px);
+    }
+
+    100%{
+        transform: translateY(0px);
+    }
+}
+
+.bounce{
+    animation-name: bounce;
+    animation-duration: 1s;
+    animation-delay: 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+    0%{
+        transform: translateY(0px);
+    }
+    50%{
+        transform: translateY(-40px);
+    }
+    100%{
+        transform: translateY(0px);
+    }
 }
