@@ -1,6 +1,8 @@
 import { serverUrl } from "../../config.js";
 import { prefix64Encoded } from "../../constants.js";
+import { EditProfile } from "../Home/Components/editProfile.js";
 import { GameTable } from "../Home/Components/gameTable.js";
+import { MatchHistory } from "../Home/Components/matchHistory.js";
 
 export class Lobby {
     constructor()
@@ -8,11 +10,18 @@ export class Lobby {
         //Containers
         this.playersContainer = document.querySelector(".lobby-container");
         this.buttonsContainer = document.querySelector(".buttons-container");
+        this.matchHistoryContainer = document.querySelector(".match-history-container");
+        this.editProfileContainer = document.querySelector(".edit-profile-container");
 
         //Buttons
         this.joinButton = document.querySelector("#join-button");
         this.createButton = document.querySelector("#create-button");
         this.exitButton = document.querySelector("#exit-button");
+        this.matchHistoryButton = document.querySelector("#match-history-button");
+        this.matchHistoryLeaveButton = document.querySelector("#leave-match-history-button");
+        this.editProfileButton = document.querySelector("#edit-profile-button");
+        this.exitEditButton = document.querySelector("#exit-edit-button");
+
         this.setEventListeners();
 
         //user izgled
@@ -59,6 +68,41 @@ export class Lobby {
             await this.connection.invoke("LeaveLobby");
         });
 
+        this.matchHistoryButton.addEventListener("click", async () => {
+            this.buttonsContainer.classList.remove("enabled");
+            this.buttonsContainer.classList.add("disabled");
+
+            this.matchHistoryContainer.classList.remove("disabled");
+            this.matchHistoryContainer.classList.add("enabled");
+            let matchHistory = new MatchHistory(this.matchHistoryContainer);
+        });
+
+        this.matchHistoryLeaveButton.addEventListener("click",() => {
+            this.buttonsContainer.classList.remove("disabled");
+            this.buttonsContainer.classList.add("enabled");
+
+            this.matchHistoryContainer.classList.remove("enabled");
+            this.matchHistoryContainer.classList.add("disabled");
+        });
+
+        this.editProfileButton.addEventListener("click",() => {
+            this.buttonsContainer.classList.remove("enabled");
+            this.buttonsContainer.classList.add("disabled");
+
+            this.editProfileContainer.classList.remove("disabled");
+            this.editProfileContainer.classList.add("enabled");
+
+
+            let editProfile = new EditProfile();
+        });
+
+        this.exitEditButton.addEventListener("click",() => {
+            this.buttonsContainer.classList.remove("disabled");
+            this.buttonsContainer.classList.add("enabled");
+
+            this.editProfileContainer.classList.remove("enabled");
+            this.editProfileContainer.classList.add("disabled");
+        })
     }   
 
     async establishConnection() {

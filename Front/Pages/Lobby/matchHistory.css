@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&family=Yanone+Kaffeesatz:wght@300&display=swap');
+
+.match-history-container{
+    width: 90%;
+    height: 100vh;
+    margin-bottom: 3%;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: auto;
+    gap: 3%;
+    align-items: center;
+}
+
+.match-history-card{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 5%;
+    align-items: center;
+    flex-direction: column;
+}
+
+.match-history-image{
+    height: 50%;
+    border-radius: 50%;
+    border: 2px solid whitesmoke;
+    aspect-ratio: 1;
+}
+
+.match-history-result{
+    font-family: 'Roboto', sans-serif;
+    color: aliceblue;
+    font-size: 20px;
+    height: 20%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.match-history-match{
+    background-color: rgba(20, 20, 20, 0.4) ;
+    padding: 5px;
+    width: 90%;
+    height: 20%;
+    border: 2px solid rgb(162, 155, 155);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
