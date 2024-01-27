@@ -45,6 +45,8 @@ public class GameState
     private static readonly int BLUE_FIGURE_ID2 = 14;
     private static readonly int BLUE_FIGURE_ID3 = 15;
     #endregion
+
+    #region
     //members
     private List<PlayerInfo> _players;
     private int _currentPlayerTurn = 0;
@@ -60,7 +62,7 @@ public class GameState
     public int NextPlayerTurnId { get { ++CurrentPlayerTurn; return _currentPlayerTurn; } }
     public int MaximumNumberOfPlayers { get => 4; }
     public int ActivePlayers { get => _activePlayers; set => _activePlayers = value; }
-
+    #endregion
     public GameState(List<PlayerInfo> players, int gameId)
     {
         _players = players;
