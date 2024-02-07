@@ -575,6 +575,7 @@ public class GameState
         });
         var httpContent = new StringContent(json, encoding: Encoding.UTF8, "application/json");
         client.PostAsync($"http://{GameHub.SERVER_IP}:5295/MatchHistory/add-match", httpContent);
+        client.DeleteAsync($"http://{GameHub.SERVER_IP}:5295/UnfinishedGame/remove/{Id}");
     }
 
     //ova metoda treba kasnije da se obrise
