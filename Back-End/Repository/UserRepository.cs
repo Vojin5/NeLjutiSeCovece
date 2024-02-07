@@ -6,7 +6,7 @@ namespace Back_End.Repository;
 
 public class UserRepository : IUserRepository
 {
-    public Context Context { get; set; }
+    public required Context Context { get; set; }
     public UserRepository(Context context)
     {
         Context = context;
@@ -30,5 +30,30 @@ public class UserRepository : IUserRepository
     {
         return await Context.Users
             .FindAsync(id);
+    }
+
+    public async Task<UserInfoViewModel> GetUserProfileInfoAsync(int id)
+    {
+        return await Context.Users
+            .Where(u => u.Id == id)
+            .Select(u => new UserInfoViewModel(u.Username, u.Password, u.Email, u.Image))
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task UpdateUserProfileInfoAsync(User user, UserUpdateModel userUpdate)
+    {
+        string salt = BCrypt.Net.BCrypt.GenerateSalt();
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(userUpdate.Password, salt);
+
+        user.Username = userUpdate.Username;
+        user.Email = userUpdate.Email;
+        user.Image = userUpdate.Image;
+        user.Password = passwordHash;
+        user.PasswordSalt = salt;
+
+        Context.Users.Update(user);
+        await Context.SaveChangesAsync();
+        return;
+       
     }
 }

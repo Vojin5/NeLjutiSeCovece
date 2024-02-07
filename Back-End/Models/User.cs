@@ -12,7 +12,10 @@ public class User
     public string PasswordSalt { get; set; }
     public int Elo { get; set; }
     public byte[] Image { get; set; }
+
+    //navigacije
     public List<MatchHistory>? Matches { get; set; }
+    public List<UnfinishedGame>? UnfinishedGames { get; set; }
     public User() { }
 
     public User(string username, string email, string password, string passwordSalt, byte[] image)

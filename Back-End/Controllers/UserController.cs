@@ -65,4 +65,22 @@ public class UserController : ControllerBase
             Image = expectedUser.Image
         });
     }
+
+    [HttpGet("info/{id}")]
+    public async Task<ActionResult> GetUserProfileInfo([FromRoute] int id)
+    {
+        return Ok(await UserRepository.GetUserProfileInfoAsync(id));
+    }
+
+    [HttpPut("update/{id}")]
+    public async Task<ActionResult> UpdateUserProfile([FromBody]UserUpdateModel user, [FromRoute]int id)
+    {
+        var existingUser = await UserRepository.GetUserByIdAsync(id);
+
+        await UserRepository.UpdateUserProfileInfoAsync(existingUser, user);
+
+        return Ok();
+
+    }
+    
 }

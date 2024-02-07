@@ -130,6 +130,7 @@ C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\refint\
 C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.pdb
 C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.genruntimeconfig.cache
 C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\ref\Back-End.dll
+<<<<<<< HEAD
 C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\bin\Debug\net7.0\appsettings.json
 C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\bin\Debug\net7.0\Back-End.exe
@@ -175,3 +176,7 @@ C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\refint\Back-End
 C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.pdb
 C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.genruntimeconfig.cache
 C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\ref\Back-End.dll
+=======
+C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.sourcelink.json
+C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\bin\Debug\net7.0\Newtonsoft.Json.dll
+>>>>>>> gameStateV2
