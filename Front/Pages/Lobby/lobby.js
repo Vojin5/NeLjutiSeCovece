@@ -12,6 +12,7 @@ export class Lobby {
         this.buttonsContainer = document.querySelector(".buttons-container");
         this.matchHistoryContainer = document.querySelector(".match-history-container");
         this.editProfileContainer = document.querySelector(".edit-profile-container");
+        this.savedGamesContainer = document.querySelector(".saved-games-container");
 
         //Buttons
         this.joinButton = document.querySelector("#join-button");
@@ -111,11 +112,45 @@ export class Lobby {
             console.log("Lista");
             console.log(lista);
 
-            await this.connection.invoke("ReJoinMatch", lista[0].gameKey);
+            // await this.connection.invoke("ReJoinMatch", lista[0].gameKey);
+
+            this.buttonsContainer.classList.remove("enabled");
+            this.buttonsContainer.classList.add("disabled");
+
+            this.savedGamesContainer.classList.remove("disabled");
+            this.savedGamesContainer.classList.add("enabled");
+
+            //add data
+            lista.forEach((element,index) => {
+                let cardItem = document.createElement("div");
+                cardItem.classList.add("saved-game-card");
+                let gameNameLabel = document.createElement("label");
+                gameNameLabel.textContent = "Game : " + (index+1);
+                let joinButton = document.createElement("button");
+                joinButton.classList.add("button2");
+                joinButton.textContent = "Join game";
+                joinButton.addEventListener("click",async () => {
+                    console.log(lista[index].gameKey);
+                    await this.connection.invoke("ReJoinMatch", lista[index].gameKey);
+                });
+                cardItem.appendChild(gameNameLabel);
+                cardItem.appendChild(joinButton);
+                this.savedGamesContainer.appendChild(cardItem);
+            });
+
+            let leaveButton = document.createElement("button");
+            leaveButton.classList.add("button3");
+            leaveButton.textContent = "Leave saved games";
+            leaveButton.addEventListener("click",() => {
+                this.buttonsContainer.classList.remove("disabled");
+                this.buttonsContainer.classList.add("enabled");
+
+                this.savedGamesContainer.classList.remove("enabled");
+                this.savedGamesContainer.classList.add("disabled");
+            });
+            this.savedGamesContainer.appendChild(leaveButton);
 
         });
-
-
     }   
 
     async establishConnection() {
@@ -163,6 +198,7 @@ export class Lobby {
     }
 
     handleReCreationOfGameState(gameId, state, players) {
+        console.log("in");
         new GameTable(gameId, JSON.parse(state), players, this.connection).recreateGameState();
     }
 }
