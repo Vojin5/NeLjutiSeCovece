@@ -3,16 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|c:\\users\\roko\\desktop\\aipsproj\\neljutisecovece\\back-end\\signalr\\services\\activegames.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|solutionrelative:signalr\\services\\activegames.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|c:\\users\\roko\\desktop\\aipsproj\\neljutisecovece\\back-end\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|c:\\users\\roko\\desktop\\aipsproj\\neljutisecovece\\back-end\\signalr\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|solutionrelative:signalr\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|c:\\users\\roko\\desktop\\aipsproj\\neljutisecovece\\back-end\\signalr\\models\\gamestate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|solutionrelative:signalr\\models\\gamestate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|c:\\users\\roko\\desktop\\aipsproj\\neljutisecovece\\back-end\\signalr\\services\\iactivegames.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|solutionrelative:signalr\\services\\iactivegames.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|c:\\users\\roko\\desktop\\aipsproj\\neljutisecovece\\back-end\\signalr\\services\\activegames.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|solutionrelative:signalr\\services\\activegames.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|c:\\users\\roko\\desktop\\aipsproj\\neljutisecovece\\back-end\\controllers\\unfinishedgamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C3082C0B-C89E-44C4-B1D0-121DB7DAFE15}|Back-End.csproj|solutionrelative:controllers\\unfinishedgamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -25,8 +37,51 @@
           "SelectedChildIndex": 1,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-02-07T10:00:17.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UnfinishedGameController.cs",
+              "DocumentMoniker": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\Controllers\\UnfinishedGameController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UnfinishedGameController.cs",
+              "ToolTip": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\Controllers\\UnfinishedGameController.cs",
+              "RelativeToolTip": "Controllers\\UnfinishedGameController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADoAAAAyAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-02-07T09:55:01.863Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "GameState.cs",
+              "DocumentMoniker": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\SignalR\\Models\\GameState.cs",
+              "RelativeDocumentMoniker": "SignalR\\Models\\GameState.cs",
+              "ToolTip": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\SignalR\\Models\\GameState.cs",
+              "RelativeToolTip": "SignalR\\Models\\GameState.cs",
+              "ViewState": "AQIAAEEAAAAAAAAAAAAAwD0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-02-07T09:50:52.337Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "IActiveGames.cs",
               "DocumentMoniker": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\SignalR\\Services\\IActiveGames.cs",
               "RelativeDocumentMoniker": "SignalR\\Services\\IActiveGames.cs",
@@ -39,20 +94,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "ActiveGames.cs",
               "DocumentMoniker": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\SignalR\\Services\\ActiveGames.cs",
               "RelativeDocumentMoniker": "SignalR\\Services\\ActiveGames.cs",
               "ToolTip": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\SignalR\\Services\\ActiveGames.cs",
               "RelativeToolTip": "SignalR\\Services\\ActiveGames.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAkAAAA",
+              "ViewState": "AQIAAHAAAAAAAAAAAAAQwGUAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-03T22:09:34.455Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
@@ -62,7 +113,7 @@
               "RelativeDocumentMoniker": "SignalR\\Hubs\\GameHub.cs",
               "ToolTip": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\SignalR\\Hubs\\GameHub.cs",
               "RelativeToolTip": "SignalR\\Hubs\\GameHub.cs",
-              "ViewState": "AQIAAEMAAAAAAAAAAAAgwAYAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-03T22:08:59.381Z",
               "EditorCaption": ""

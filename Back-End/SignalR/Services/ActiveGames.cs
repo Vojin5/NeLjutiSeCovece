@@ -118,6 +118,5 @@ public class ActiveGames : IActiveGames
             .SendAsync("handleReCreationOfGameState", gameKey, gameState, _activeGames[gameKey].Players.Select(p => new { p.Avatar, p.Username }));
         await _hubContext.Clients.Client(players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handleMyTurn");
     }
-    
 }
 
