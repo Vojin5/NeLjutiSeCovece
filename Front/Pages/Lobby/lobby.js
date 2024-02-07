@@ -1,6 +1,8 @@
 import { serverUrl } from "../../config.js";
 import { prefix64Encoded } from "../../constants.js";
+import { EditProfile } from "../Home/Components/editProfile.js";
 import { GameTable } from "../Home/Components/gameTable.js";
+import { MatchHistory } from "../Home/Components/matchHistory.js";
 
 export class Lobby {
     constructor()
@@ -8,11 +10,20 @@ export class Lobby {
         //Containers
         this.playersContainer = document.querySelector(".lobby-container");
         this.buttonsContainer = document.querySelector(".buttons-container");
+        this.matchHistoryContainer = document.querySelector(".match-history-container");
+        this.editProfileContainer = document.querySelector(".edit-profile-container");
+        this.savedGamesContainer = document.querySelector(".saved-games-container");
 
         //Buttons
         this.joinButton = document.querySelector("#join-button");
         this.createButton = document.querySelector("#create-button");
         this.exitButton = document.querySelector("#exit-button");
+        this.matchHistoryButton = document.querySelector("#match-history-button");
+        this.matchHistoryLeaveButton = document.querySelector("#leave-match-history-button");
+        this.editProfileButton = document.querySelector("#edit-profile-button");
+        this.exitEditButton = document.querySelector("#exit-edit-button");
+        this.savedButton = document.querySelector("#saved-button");
+
         this.setEventListeners();
 
         //user izgled
@@ -59,6 +70,87 @@ export class Lobby {
             await this.connection.invoke("LeaveLobby");
         });
 
+        this.matchHistoryButton.addEventListener("click", async () => {
+            this.buttonsContainer.classList.remove("enabled");
+            this.buttonsContainer.classList.add("disabled");
+
+            this.matchHistoryContainer.classList.remove("disabled");
+            this.matchHistoryContainer.classList.add("enabled");
+            let matchHistory = new MatchHistory(this.matchHistoryContainer);
+        });
+
+        this.matchHistoryLeaveButton.addEventListener("click",() => {
+            this.buttonsContainer.classList.remove("disabled");
+            this.buttonsContainer.classList.add("enabled");
+
+            this.matchHistoryContainer.classList.remove("enabled");
+            this.matchHistoryContainer.classList.add("disabled");
+        });
+
+        this.editProfileButton.addEventListener("click",() => {
+            this.buttonsContainer.classList.remove("enabled");
+            this.buttonsContainer.classList.add("disabled");
+
+            this.editProfileContainer.classList.remove("disabled");
+            this.editProfileContainer.classList.add("enabled");
+
+
+            let editProfile = new EditProfile();
+        });
+
+        this.exitEditButton.addEventListener("click",() => {
+            this.buttonsContainer.classList.remove("disabled");
+            this.buttonsContainer.classList.add("enabled");
+
+            this.editProfileContainer.classList.remove("enabled");
+            this.editProfileContainer.classList.add("disabled");
+        })
+        this.savedButton.addEventListener("click", async () => {
+            console.log(localStorage["id"]);
+            const req = await fetch(serverUrl + `/UnfinishedGame/my-games/${localStorage["id"]}`);
+            const lista = await req.json();
+            console.log("Lista");
+            console.log(lista);
+
+            // await this.connection.invoke("ReJoinMatch", lista[0].gameKey);
+
+            this.buttonsContainer.classList.remove("enabled");
+            this.buttonsContainer.classList.add("disabled");
+
+            this.savedGamesContainer.classList.remove("disabled");
+            this.savedGamesContainer.classList.add("enabled");
+
+            //add data
+            lista.forEach((element,index) => {
+                let cardItem = document.createElement("div");
+                cardItem.classList.add("saved-game-card");
+                let gameNameLabel = document.createElement("label");
+                gameNameLabel.textContent = "Game : " + (index+1);
+                let joinButton = document.createElement("button");
+                joinButton.classList.add("button2");
+                joinButton.textContent = "Join game";
+                joinButton.addEventListener("click",async () => {
+                    console.log(lista[index].gameKey);
+                    await this.connection.invoke("ReJoinMatch", lista[index].gameKey);
+                });
+                cardItem.appendChild(gameNameLabel);
+                cardItem.appendChild(joinButton);
+                this.savedGamesContainer.appendChild(cardItem);
+            });
+
+            let leaveButton = document.createElement("button");
+            leaveButton.classList.add("button3");
+            leaveButton.textContent = "Leave saved games";
+            leaveButton.addEventListener("click",() => {
+                this.buttonsContainer.classList.remove("disabled");
+                this.buttonsContainer.classList.add("enabled");
+
+                this.savedGamesContainer.classList.remove("enabled");
+                this.savedGamesContainer.classList.add("disabled");
+            });
+            this.savedGamesContainer.appendChild(leaveButton);
+
+        });
     }   
 
     async establishConnection() {
@@ -68,6 +160,7 @@ export class Lobby {
 
         this.connection.on("handleUpdateLobby", (players) => this.handleUpdateLobby(players));
         this.connection.on("handleGameStart", (gameId) => this.handleGameStart(gameId));
+        this.connection.on("handleReCreationOfGameState", (gameId, state, players) => this.handleReCreationOfGameState(gameId, state, players));
 
         await this.connection.start();
         const pInfo = {
@@ -101,7 +194,12 @@ export class Lobby {
     }
 
     handleGameStart(gameId) {
-        new GameTable(gameId, this.connection, this.players).draw();
+        new GameTable(gameId, null, this.players, this.connection).draw();
+    }
+
+    handleReCreationOfGameState(gameId, state, players) {
+        console.log("in");
+        new GameTable(gameId, JSON.parse(state), players, this.connection).recreateGameState();
     }
 }
 

@@ -1,4 +1,12 @@
-﻿namespace Back_End.SignalR.Models;
+﻿using Back_End.Controllers;
+using Back_End.Models;
+using Back_End.SignalR.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text;
+
+namespace Back_End.SignalR.Models;
 
 public class GameState
 {
@@ -45,6 +53,8 @@ public class GameState
     private static readonly int BLUE_FIGURE_ID2 = 14;
     private static readonly int BLUE_FIGURE_ID3 = 15;
     #endregion
+
+    #region
     //members
     private List<PlayerInfo> _players;
     private int _currentPlayerTurn = 0;
@@ -52,16 +62,26 @@ public class GameState
 
     private Figure[][] _figures = new Figure[4][]; //igrac 0, figure [0..3]
     private List<Figure> _positions = Enumerable.Repeat(Figure.Default, 56).ToList();
+    private List<PlayerInfo> _bestPlayers = new();
 
     //props
     public List<PlayerInfo> Players { get => _players; set => _players = value; }
-    public int Id { get; set; }
+    public string Id { get; set; }
     public int CurrentPlayerTurn { get => _currentPlayerTurn; set => _currentPlayerTurn = value % MaximumNumberOfPlayers; }
     public int NextPlayerTurnId { get { ++CurrentPlayerTurn; return _currentPlayerTurn; } }
     public int MaximumNumberOfPlayers { get => 4; }
     public int ActivePlayers { get => _activePlayers; set => _activePlayers = value; }
 
-    public GameState(List<PlayerInfo> players, int gameId)
+    public bool GameOver { get; set; } = false;
+
+    public MatchHistoryController MatchHistoryController;
+    #endregion
+
+    public GameState()
+    {
+        
+    }
+    public GameState(List<PlayerInfo> players, string gameId)
     {
         _players = players;
         Id = gameId;
@@ -418,7 +438,8 @@ public class GameState
 
     public bool CheckIfPlayerValid(string connectionId)
     {
-        if (_players[CurrentPlayerTurn].ConnectionId != connectionId) return false;
+
+        if (_players[CurrentPlayerTurn].ConnectionId != connectionId) { return false; }
         return true;
     }
     public Action UpdateGameState(PlayerMove move)
@@ -516,7 +537,188 @@ public class GameState
     }
     public bool IsGameOver()
     {
-        return true;
+        //SimulateGameOver();
+        int figuresInHome = 0;
+        int counter;
+        for (int i = 0; i < 4; i++)
+        {
+            counter = 0;
+            for (int j = 0; j < 4; j++)
+            {
+                if (_figures[i][j].InHome)
+                    counter++;
+            }
+            if (counter == 4 && !_bestPlayers.Contains(_players[i]))
+            {
+                _bestPlayers.Add(_players[i]);
+            }
+            figuresInHome += counter;
+        }
+
+        GameOver = figuresInHome == 16;
+        return GameOver;
+    }
+
+    public void GameOverNotifyPlayers(IHubContext<GameHub> hubContext)
+    {
+        hubContext.Clients.Client(_bestPlayers[0].ConnectionId).SendAsync("handleGameOver", 5);
+        hubContext.Clients.Client(_bestPlayers[1].ConnectionId).SendAsync("handleGameOver", 3);
+        hubContext.Clients.Client(_bestPlayers[2].ConnectionId).SendAsync("handleGameOver", 2);
+        hubContext.Clients.Client(_bestPlayers[3].ConnectionId).SendAsync("handleGameOver", 1);
+
+        HttpClient client = new();
+        var json = JsonConvert.SerializeObject(new List<MatchHistoryUser>() {
+            new MatchHistoryUser() {UserId = _bestPlayers[0].Id, Points = 5},
+            new MatchHistoryUser() {UserId = _bestPlayers[1].Id, Points = 3},
+            new MatchHistoryUser() {UserId = _bestPlayers[2].Id, Points = 2},
+            new MatchHistoryUser() {UserId = _bestPlayers[3].Id, Points = 1}
+        });
+        var httpContent = new StringContent(json, encoding: Encoding.UTF8, "application/json");
+        client.PostAsync("http://127.0.0.1:5295/MatchHistory/add-match", httpContent);
+    }
+
+    //ova metoda treba kasnije da se obrise
+    private void SimulateGameOver()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j <4;j++)
+            {
+                _figures[i][j].InHome = true;
+            }
+        }
+    }
+
+    public void HandlePlayerLeaving()
+    {
+        if (GameOver)
+        {
+            return;
+        }
+
+        string gameState = "{\n\"figures\":{";
+
+        gameState += "\n\"yellow\":[";
+        gameState += _figures[0][0].StringState() + "," + _figures[0][1].StringState() + "," + _figures[0][2].StringState() + "," + _figures[0][3].StringState();
+        gameState += "],";
+
+        gameState += "\n\"green\":[";
+        gameState += _figures[1][0].StringState() + "," + _figures[1][1].StringState() + "," + _figures[1][2].StringState() + "," + _figures[1][3].StringState();
+        gameState += "],";
+
+        gameState += "\n\"red\":[";
+        gameState += _figures[2][0].StringState() + "," + _figures[2][1].StringState() + "," + _figures[2][2].StringState() + "," + _figures[2][3].StringState();
+        gameState += "],";
+
+        gameState += "\n\"blue\":[";
+        gameState += _figures[3][0].StringState() + "," + _figures[3][1].StringState() + "," + _figures[3][2].StringState() + "," + _figures[3][3].StringState();
+        gameState += "]";
+
+        gameState += "\n},";
+
+        gameState += "\n\"players\":[" + _players[0].Id + ", " + _players[1].Id + ", " + _players[2].Id + ", " + _players[3].Id + "],";
+
+        gameState += "\n\"currentPlayerTurnId\":" + CurrentPlayerTurn;
+
+        gameState += "\n}";
+
+        List<int> userIds = _players.Select(p => p.Id).ToList();
+
+        HttpClient client = new();
+        var json = JsonConvert.SerializeObject(new
+        {
+            gameKey = Id,
+            state = gameState,
+            playerIds = userIds
+        });
+
+        var httpContent = new StringContent(json, encoding: Encoding.UTF8, "application/json");
+        client.PostAsync($"http://127.0.0.1:5295/UnfinishedGame/add", httpContent);
+    }
+
+    public string ReCreateState(JObject gameStateJSON, List<PlayerInfo> players)
+    {
+        _players = new();
+
+        var playerIds = gameStateJSON["players"];
+        _players.Add(players.Where(p => p.Id == (int)playerIds[0]).FirstOrDefault());
+        _players.Add(players.Where(p => p.Id == (int)playerIds[1]).FirstOrDefault());
+        _players.Add(players.Where(p => p.Id == (int)playerIds[2]).FirstOrDefault());
+        _players.Add(players.Where(p => p.Id == (int)playerIds[3]).FirstOrDefault());
+
+
+
+        string boja = "";
+        for (int i = 0; i < 4; i++)
+        {
+            _figures[i] = new Figure[4];
+            if (i == 0) boja = "yellow";
+            else if (i == 1) boja = "green";
+            else if (i == 2) boja = "red";
+            else if (i == 3) boja = "blue";
+            for (int j = 0; j < 4; j++)
+            {
+                Figure figure = new Figure();
+                figure.Id = i * 4 + j;
+                figure.Position = (int)gameStateJSON!["figures"]![boja]![j]!;
+                if (figure.Position == -1) figure.InBase = true; else figure.InBase = false;
+                figure.Color = (Color)i;
+                if (IsFigureInHome(figure)) figure.InHome = true; else figure.InHome = false;
+                if (!figure.InBase) _positions[figure.Position] = figure;
+                _figures[i][j] = figure;
+            }
+        }
+        return SerializeState();
+
+    }
+
+    private bool IsFigureInHome(Figure figure)
+    {
+        if (figure.Color == Color.YELLOW)
+        {
+            if (figure.Position >= 44 && figure.Position <= 47) return true;
+        }
+        else if (figure.Color == Color.GREEN)
+        {
+            if (figure.Position >= 2 && figure.Position <= 5) return true;
+        }
+        else if (figure.Color == Color.RED)
+        {
+            if (figure.Position >= 16 && figure.Position <= 19) return true;
+        }
+        else if (figure.Color == Color.BLUE)
+        {
+            if (figure.Position >= 30 && figure.Position <= 33) return true;
+        }
+        return false;
+    }
+
+    private string SerializeState()
+    {
+        string gameState = "{\n\"figures\":{";
+
+        gameState += "\n\"yellow\":[";
+        gameState += _figures[0][0].StringState() + "," + _figures[0][1].StringState() + "," + _figures[0][2].StringState() + "," + _figures[0][3].StringState();
+        gameState += "],";
+
+        gameState += "\n\"green\":[";
+        gameState += _figures[1][0].StringState() + "," + _figures[1][1].StringState() + "," + _figures[1][2].StringState() + "," + _figures[1][3].StringState();
+        gameState += "],";
+
+        gameState += "\n\"red\":[";
+        gameState += _figures[2][0].StringState() + "," + _figures[2][1].StringState() + "," + _figures[2][2].StringState() + "," + _figures[2][3].StringState();
+        gameState += "],";
+
+        gameState += "\n\"blue\":[";
+        gameState += _figures[3][0].StringState() + "," + _figures[3][1].StringState() + "," + _figures[3][2].StringState() + "," + _figures[3][3].StringState();
+        gameState += "]";
+
+        gameState += "\n},\n";
+
+        gameState += "\"currentPlayerTurnId\":" + CurrentPlayerTurn;
+        gameState += "\n}";
+
+        return gameState;
     }
 }
 

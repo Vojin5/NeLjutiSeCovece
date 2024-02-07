@@ -1,0 +1,27 @@
+
+.saved-games-container{
+    padding: 2%;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.saved-game-card{
+    border-radius: 12px;
+    padding: 5px;
+    width: 80%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: rgba(0, 0, 0,0.5);
+    border: 2px solid whitesmoke;
+}
+
+.saved-games-container label{
+    font-size: 2em;
+    color: whitesmoke;
+}

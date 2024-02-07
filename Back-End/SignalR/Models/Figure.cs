@@ -29,4 +29,14 @@ public class Figure
         InHome = false;
         Position = -1;
     }
+
+    public Figure()
+    {
+
+    }
+
+    public string StringState()
+    {
+        return "" + (InBase ? "-1" : Position.ToString());
+    }
 }

@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="./lobby.css">
     <link rel="stylesheet" href="./boardStyle.css">
     <link rel="stylesheet" href="./dice.css">
+    <link rel="stylesheet" href="./matchHistory.css">
+    <link rel="stylesheet" href="./editProfile.css">
+    <link rel="stylesheet" href="./savedGames.css">
     <title>Lobby</title>
 </head>
 <body>
@@ -32,9 +35,48 @@
                 <button id="join-button" class="button" type="button">
                     Join Game
                 </button>
-                <button id="create-button" class="button" type="button">
-                    Create Game
+                <button id="match-history-button" class="button" type="button">
+                    Match History
                 </button>
+                <button id="edit-profile-button" class="button" type="button">
+                    Edit Profile
+                </button>
+                <button id="saved-button" class="button" type="button">Saved Games</button>
+            </div>
+            <!-- Match history -->
+            <div class="match-history-container disabled">
+                <button id="leave-match-history-button" class="button" type="button" style="width: 20%;">
+                    Exit
+                </button>
+            </div>
+
+            <!-- Saved games -->
+            <div class="saved-games-container disabled">
+
+            </div>
+
+
+            <div class="edit-profile-container disabled">
+                <div class="label" id="registerUsernameLabelEdit" >Username</div>
+                <input class="input" type="text" id="UsernameRegisterEdit">
+                <div class="label" id="registerPasswordLabelEdit">Password</div>
+                <input class="input" type="password" id="PasswordRegisterEdit">
+                <div class="label" id="registerEmailLabelEdit">Email</div>
+                <input class="input" type="email" id="EmailRegisterEdit">
+                <div class="label">Choose your avatar</div>
+
+                <input style="display: none;" type="file" id="file-input" class="file-input-edit">
+                <label class="file-input-label-edit" for="file-input">Select a file</label>
+                <img style="display: none;" class="image-preview-edit" src="">
+                <br>
+
+                <a>
+                <button id="apply-button" class="button" role="button">Apply</button>
+                </a>
+                <button id="exit-edit-button" class="button" role="button">
+                    Back
+                </button>
+
             </div>
             
             <!-- Players -->
@@ -42,22 +84,22 @@
                 <button id="exit-button" type="button">
                     <img src="../../Resources/logout.png" width="80%" height="auto"> 
                 </button>
-                <div class="player-holder">
+                <div class="player-holder holder0">
                     <img class="player-avatar avatar0" src="../../Resources/user.jpg">
                     <p class="player-name username0">Player Name</p>
                 </div>
 
-                <div class="player-holder">
+                <div class="player-holder holder1">
                     <img class="player-avatar avatar1" src="../../Resources/user.jpg">
                     <p class="player-name username1" >Player Name</p>
                 </div>
 
-                <div class="player-holder">
+                <div class="player-holder holder2">
                     <img class="player-avatar avatar2" src="../../Resources/user.jpg">
                     <p class="player-name username2">Player Name</p>
                 </div>
 
-                <div class="player-holder">
+                <div class="player-holder holder3">
                     <img class="player-avatar avatar3" src="../../Resources/user.jpg">
                     <p class="player-name username3">Player Name</p>
                 </div>
@@ -358,7 +400,7 @@
                     </div>
                 </div>
             </div>
-
+    
             <div class="right-aisle">
                 <div class="table-player-container">
                     <img class="table-player-image green-border green-user-avatar" src="../../Resources/user.jpg">

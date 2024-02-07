@@ -1,111 +1,122 @@
-﻿using Back_End.SignalR.Hubs;
+﻿using Back_End.Controllers;
+using Back_End.SignalR.Hubs;
 using Back_End.SignalR.Models;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Action = Back_End.SignalR.Models.Action;
 
 namespace Back_End.SignalR.Services;
 public class ActiveGames : IActiveGames
 {
-    private Dictionary<int, GameState> _activeGames = new();
+    private Dictionary<string, GameState> _activeGames = new();
     private readonly IHubContext<GameHub> _hubContext;
-
-    private static int GAME_ID_GENERATOR = 0;
 
     public ActiveGames(IHubContext<GameHub> hubContext)
     {
         _hubContext = hubContext;
     }
-    public void StartGame(IGameLobby lobby)
+    public async Task StartGame(IGameLobby lobby)
     {
-        int gameId = GAME_ID_GENERATOR++;
+        string gameId = Guid.NewGuid().ToString();
         GameState game = new(lobby.Players, gameId);
         _activeGames.Add(gameId, game);
 
 
         List<string> connectionIds = new(4);
         lobby.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
-        _hubContext.Clients.Clients(connectionIds).SendAsync("handleGameStart", game.Id);
-        _hubContext.Clients.Clients(game.Players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handleMyTurn");
+        await _hubContext.Clients.Clients(connectionIds).SendAsync("handleGameStart", game.Id);
+        await _hubContext.Clients.Clients(game.Players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handleMyTurn");
         lobby.Clear();
     }
-
-    public void RemovePlayerFromGame(PlayerInfo player)
-    {
-        //var game = _activeGames[player.GameId];
-        //game.Remove(player);
-        //player.InGame = false;
-    }
-
+    
     public void EnsureThatPlayerIsNotInGame(PlayerInfo player)
     {
         if (!player.InGame) return;
-
-        player.InGame = false;
-
-        GameState game = _activeGames[player.GameId];
-        game.ActivePlayers--;
-
-        List<PlayerInfo> players = game.Players;
-
-        List<String> connectionIds = players.Where(p => p.InGame).Select(p => p.ConnectionId).ToList();
-
-        if (game.ActivePlayers == 0)
-        {
-
-        }
-
-        if (players[game.CurrentPlayerTurn].ConnectionId == player.ConnectionId)
-        {
-            
-        }
+        _activeGames[player.GameId].HandlePlayerLeaving();
+        _activeGames[player.GameId].Players.ForEach(p => p.InGame = false);
+        _activeGames.Remove(player.GameId);
     }
 
-    public void DiceThrown(int gameId, string connectionId)
+    public async Task DiceThrown(PlayerInfo player)
     {
+        GameState game = _activeGames[player.GameId];
 
-        GameState game = _activeGames[gameId];
-
-        //Za slucaj da pokusa da baca neko ko nije na redu
-        if (!game.CheckIfPlayerValid(connectionId)) return;
+        if (!game.CheckIfPlayerValid(player.ConnectionId)) return;
 
         List<string> connectionIds = new(4);
         game.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
 
-        _hubContext.Clients.Clients(connectionIds).SendAsync("handleStartDiceAnimation");
+        await _hubContext.Clients.Clients(connectionIds).SendAsync("handleStartDiceAnimation");
 
-        //Izmeniti generisanje broja kockice kasnije
 
         int diceNum = new Random().Next(7);
         if (diceNum == 0)
         {
             diceNum = 1;
         }
-        _hubContext.Clients.Clients(connectionIds).SendAsync("handleDiceNumber", diceNum);
-        
+
+        diceNum = 6;
+        await _hubContext.Clients.Clients(connectionIds).SendAsync("handleDiceNumber", diceNum);
+
 
         List<PlayerMove> moves = game.GeneratePossiblePlayerMoves(diceNum);
-        Console.WriteLine("BROJ MOGUCIH POTEZA JE " + moves.Count);
+
         if (moves.Count == 0)
-        {   
-            _hubContext.Clients.Clients(game.Players[game.NextPlayerTurnId].ConnectionId).SendAsync("handleMyTurn");
+        {
+            await _hubContext.Clients.Clients(game.Players[game.NextPlayerTurnId].ConnectionId).SendAsync("handleMyTurn");
             return;
         }
 
-        _hubContext.Clients.Client(game.Players[game.CurrentPlayerTurn % 4].ConnectionId).SendAsync("handlePossibleMoves", moves);
+        await _hubContext.Clients.Client(game.Players[game.CurrentPlayerTurn % 4].ConnectionId).SendAsync("handlePossibleMoves", moves);
     }
 
-    public void MovePlayed(int gameId, PlayerMove move)
+    public async void MovePlayed(PlayerInfo player, PlayerMove move)
     {
-        Console.WriteLine("ODIGRAVA SE POTEZ " + move.FigureId + " " + move.NewPosition);
-        GameState game = _activeGames[gameId];
+        GameState game = _activeGames[player.GameId];
 
         List<string> connectionIds = new(4);
         game.Players.ForEach(p => connectionIds.Add(p.ConnectionId));
 
         Action action = game.UpdateGameState(move);
-        _hubContext.Clients.Clients(connectionIds).SendAsync("handlePlayerMove", action);
-        _hubContext.Clients.Clients(game.Players[game.NextPlayerTurnId].ConnectionId).SendAsync("handleMyTurn");
+        if (game.IsGameOver())
+        {
+            game.GameOverNotifyPlayers(_hubContext);
+            HttpClient client = new();
+            await client.DeleteAsync($"http://localhost:5295/UnfinishedGame/remove/{player.GameId}");
+            return;
+        }
+        await _hubContext.Clients.Clients(connectionIds).SendAsync("handlePlayerMove", action);
+        await _hubContext.Clients.Clients(game.Players[game.NextPlayerTurnId].ConnectionId).SendAsync("handleMyTurn");
 
+    }
+
+    public async Task ReCreateGame(string gameKey, List<PlayerInfo> players)
+    {
+        var client = new HttpClient();
+        var res = await client.GetAsync($"http://127.0.0.1:5295/UnfinishedGame/game-state/{gameKey}");
+        var content = await res.Content.ReadAsStringAsync();
+        var contentJSON = JsonConvert.DeserializeObject<JObject>(content);
+
+        GameState game = new();
+        game.Id = gameKey;
+        players.ForEach(p =>
+        {
+            p.GameId = gameKey;
+            p.InGame = true;
+        });
+
+
+        game.CurrentPlayerTurn = (int)contentJSON!["currentPlayerTurnId"]!;
+        var gameState = game.ReCreateState(contentJSON, players);
+        _activeGames.Add(gameKey, game);
+        
+
+        List<string> connectionIds = players.Select(p => p.ConnectionId).ToList();
+        await _hubContext.Clients
+            .Clients(connectionIds)
+            .SendAsync("handleReCreationOfGameState", gameKey, gameState, _activeGames[gameKey].Players.Select(p => new { p.Avatar, p.Username }));
+        await _hubContext.Clients.Client(players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handleMyTurn");
     }
 }
 

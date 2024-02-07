@@ -198,8 +198,8 @@ input{
 
 .image-preview{
   border: 2px solid whitesmoke;
-  width: 10rem;
-  height: 10rem;
+  width: 7rem;
+  height: 7rem;
   border-radius: 50%;
   object-fit: cover;
   

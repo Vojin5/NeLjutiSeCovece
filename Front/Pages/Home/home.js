@@ -81,23 +81,26 @@ export class HomePage {
             window.open(baseUrl + '/Front/Pages/Lobby/lobby.html');
         }
         else {
-            alert("Dodati kasnije errore kada je login neuspesan");
+            alert("Doslo je do greske,pokusajte ponovo");
         }
     }
 
     async handleRegisterButtonClick() {
         if (this.userRegister.username.length == 0 || !this.userRegister.username.match(usernamePattern)) {
             this.usernameRegisterLabel.style.color = "red";
+            return;
         }
         if (this.userRegister.password.length == 0 || !this.userRegister.password.match(passwordPattern)) {
             this.passwordRegisterLabel.style.color = "red";
+            return;
         }
         if (this.userRegister.email.length == 0 || !this.userRegister.email.match(emailPattern)) {
             this.emailRegisterLabel.style.color = "red";
+            return;
         }
         if (this.userRegister.imageBase64Encoded.length == 0) {
             //dodati kasnije neki vizuelni error za sliku
-            alert("TREBA DODATI ERROR ZA SLIKU, NISI JE UPLOAD!")
+            alert("Neophodno je dodati sliku");
             return;
         }
 
@@ -115,8 +118,7 @@ export class HomePage {
             anchor.click();
         }
         else {
-            //dodati kasnije neki error za register?
-            alert("Username je zauzet");
+            alert("Username je zauzet,pokusajte ponovo");
             return;
         }
 
