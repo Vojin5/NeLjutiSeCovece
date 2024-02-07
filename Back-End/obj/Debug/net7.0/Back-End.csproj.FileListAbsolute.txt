@@ -130,3 +130,5 @@ C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\refint\
 C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.pdb
 C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.genruntimeconfig.cache
 C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\ref\Back-End.dll
+C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.sourcelink.json
+C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\bin\Debug\net7.0\Newtonsoft.Json.dll

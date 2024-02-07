@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NqicgbGpznSTju8HbzF6d4m5urfk4mh6nN8XaDEOa/M9LCbfVULL/uuu1D5L13Er9uOdnun3Frk/Bzel8kxDsw==",
+  "dgSpecHash": "VV/EMpdpwcAF2dSd+RVR6RbkIA+xPmtD951K2Kju5nh48bBAtiVGND892xlp7jFsP9Tz4ZMTGg3jMhItdti8Xg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Roko\\Desktop\\AIPSPROJ\\NeLjutiSeCovece\\Back-End\\Back-End.csproj",
   "expectedPackageFiles": [
@@ -25,6 +25,7 @@
     "C:\\Users\\Roko\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
     "C:\\Users\\Roko\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
     "C:\\Users\\Roko\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\Roko\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Roko\\.nuget\\packages\\npgsql\\7.0.6\\npgsql.7.0.6.nupkg.sha512",
     "C:\\Users\\Roko\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.11\\npgsql.entityframeworkcore.postgresql.7.0.11.nupkg.sha512",
     "C:\\Users\\Roko\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",

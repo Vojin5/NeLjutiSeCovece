@@ -13,6 +13,7 @@ export class Lobby {
         this.joinButton = document.querySelector("#join-button");
         this.createButton = document.querySelector("#create-button");
         this.exitButton = document.querySelector("#exit-button");
+        this.savedButton = document.querySelector("#saved-button");
         this.setEventListeners();
 
         //user izgled
@@ -59,6 +60,17 @@ export class Lobby {
             await this.connection.invoke("LeaveLobby");
         });
 
+        this.savedButton.addEventListener("click", async () => {
+            console.log(localStorage["id"]);
+            const req = await fetch(serverUrl + `/UnfinishedGame/my-games/${localStorage["id"]}`);
+            const lista = await req.json();
+            console.log("Lista");
+            console.log(lista);
+
+            await this.connection.invoke("ReJoinMatch", lista[0].gameKey);
+
+        });
+
     }   
 
     async establishConnection() {
@@ -68,6 +80,7 @@ export class Lobby {
 
         this.connection.on("handleUpdateLobby", (players) => this.handleUpdateLobby(players));
         this.connection.on("handleGameStart", (gameId) => this.handleGameStart(gameId));
+        this.connection.on("handleReCreationOfGameState", (gameId, state, players) => this.handleReCreationOfGameState(gameId, state, players));
 
         await this.connection.start();
         const pInfo = {
@@ -101,7 +114,11 @@ export class Lobby {
     }
 
     handleGameStart(gameId) {
-        new GameTable(gameId, this.connection, this.players).draw();
+        new GameTable(gameId, null, this.players, this.connection).draw();
+    }
+
+    handleReCreationOfGameState(gameId, state, players) {
+        new GameTable(gameId, JSON.parse(state), players, this.connection).recreateGameState();
     }
 }
 

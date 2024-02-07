@@ -12,7 +12,7 @@ public class PlayerInfo
     }
     public int Id { get; set; }
     public string ConnectionId { get; set; }
-    public int GameId { get; set; }
+    public string GameId { get; set; } = "";
     public bool InGame { get; set; }
     public bool InLobby { get; set; }
     public string Avatar { get; set; }

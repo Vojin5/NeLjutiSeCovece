@@ -23,7 +23,7 @@ public class MatchHistoryController : ControllerBase
 
     }
 
-    [HttpPost]
+    [HttpPost("add-match")]
     public async Task<ActionResult> AddMatch([FromBody] List<MatchHistoryUser> users)
     {
         List<User?> usersToFind = new List<User?>();

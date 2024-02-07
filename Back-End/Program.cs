@@ -7,10 +7,10 @@ using Back_End.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.Listen(System.Net.IPAddress.Parse("10.66.98.32"), 5295);
-});
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.Listen(System.Net.IPAddress.Parse("10.66.98.32"), 5295);
+//});
 
 // Add services to the container.
 
@@ -34,11 +34,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddSignalR(options =>
 {
     options.EnableDetailedErrors = true;
+    options.MaximumReceiveMessageSize = int.MaxValue;
 });
 
 builder.Services.AddSingleton<IGameLobby, GameLobby>();
 builder.Services.AddSingleton<IActiveGames, ActiveGames>();
 builder.Services.AddSingleton<IOnlinePlayers, OnlinePlayers>();
+builder.Services.AddSingleton<IPendingGames, PendingGames>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMatchHistoryRepository, MatchHistoryRepository>();
