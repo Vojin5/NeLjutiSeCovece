@@ -180,3 +180,4 @@ C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\ref\Back-End.dl
 C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\obj\Debug\net7.0\Back-End.sourcelink.json
 C:\Users\Roko\Desktop\AIPSPROJ\NeLjutiSeCovece\Back-End\bin\Debug\net7.0\Newtonsoft.Json.dll
 >>>>>>> gameStateV2
+C:\Users\Vojin\Desktop\NeLjutiSeCovece\Back-End\bin\Debug\net7.0\Newtonsoft.Json.dll

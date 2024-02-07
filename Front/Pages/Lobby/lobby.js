@@ -7,6 +7,7 @@ import { MatchHistory } from "../Home/Components/matchHistory.js";
 export class Lobby {
     constructor()
     {
+        this.saveGameButtons = [];
         //Containers
         this.playersContainer = document.querySelector(".lobby-container");
         this.buttonsContainer = document.querySelector(".buttons-container");
@@ -129,10 +130,21 @@ export class Lobby {
                 let joinButton = document.createElement("button");
                 joinButton.classList.add("button2");
                 joinButton.textContent = "Join game";
+                this.saveGameButtons.push(joinButton);
                 joinButton.addEventListener("click",async () => {
-                    console.log(lista[index].gameKey);
+                    console.log("rejoin pressed");
                     await this.connection.invoke("ReJoinMatch", lista[index].gameKey);
+                    this.saveGameButtons.forEach(button => {
+                        if(button != joinButton)
+                        {
+                            button.disabled = true;
+                            button.classList.add("button-disabled");
+                        }
+
+                    });
+
                 });
+                
                 cardItem.appendChild(gameNameLabel);
                 cardItem.appendChild(joinButton);
                 this.savedGamesContainer.appendChild(cardItem);

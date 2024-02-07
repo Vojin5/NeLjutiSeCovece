@@ -25,3 +25,8 @@
     font-size: 2em;
     color: whitesmoke;
 }
+
+.button-disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
