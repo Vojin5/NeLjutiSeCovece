@@ -37,6 +37,7 @@ public class PendingGame
 
     public void AddPlayer(PlayerInfo player)
     {
+        if (Players.Contains(player)) return;
         Players.Add(player);
     }
 

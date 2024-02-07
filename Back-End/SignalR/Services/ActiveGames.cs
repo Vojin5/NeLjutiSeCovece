@@ -56,7 +56,6 @@ public class ActiveGames : IActiveGames
             diceNum = 1;
         }
 
-        diceNum = 6;
         await _hubContext.Clients.Clients(connectionIds).SendAsync("handleDiceNumber", diceNum);
 
 
@@ -116,7 +115,7 @@ public class ActiveGames : IActiveGames
         await _hubContext.Clients
             .Clients(connectionIds)
             .SendAsync("handleReCreationOfGameState", gameKey, gameState, _activeGames[gameKey].Players.Select(p => new { p.Avatar, p.Username }));
-        await _hubContext.Clients.Client(players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handleMyTurn");
+        await _hubContext.Clients.Client(_activeGames[gameKey].Players[game.CurrentPlayerTurn].ConnectionId).SendAsync("handleMyTurn");
     }
 }
 
