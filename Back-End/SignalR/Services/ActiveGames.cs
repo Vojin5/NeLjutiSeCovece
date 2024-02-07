@@ -83,7 +83,7 @@ public class ActiveGames : IActiveGames
         {
             game.GameOverNotifyPlayers(_hubContext);
             HttpClient client = new();
-            await client.DeleteAsync($"http://localhost:5295/UnfinishedGame/remove/{player.GameId}");
+            await client.DeleteAsync($"http://{GameHub.SERVER_IP}:5295/UnfinishedGame/remove/{player.GameId}");
             return;
         }
         await _hubContext.Clients.Clients(connectionIds).SendAsync("handlePlayerMove", action);
@@ -94,7 +94,7 @@ public class ActiveGames : IActiveGames
     public async Task ReCreateGame(string gameKey, List<PlayerInfo> players)
     {
         var client = new HttpClient();
-        var res = await client.GetAsync($"http://127.0.0.1:5295/UnfinishedGame/game-state/{gameKey}");
+        var res = await client.GetAsync($"http://{GameHub.SERVER_IP}:5295/UnfinishedGame/game-state/{gameKey}");
         var content = await res.Content.ReadAsStringAsync();
         var contentJSON = JsonConvert.DeserializeObject<JObject>(content);
 
