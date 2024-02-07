@@ -170,7 +170,7 @@ export class GameTable{
                     const clonedNode = elements[j].cloneNode(true);
                     elements[j].parentNode.replaceChild(clonedNode, elements[j]);
                 }
-                await this.connection.invoke("MovePlayed", this.gameID, moves[Number.parseInt(i)]); 
+                await this.connection.invoke("MovePlayed", moves[Number.parseInt(i)]); 
             });
         }
     }
