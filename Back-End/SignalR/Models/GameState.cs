@@ -574,7 +574,7 @@ public class GameState
             new MatchHistoryUser() {UserId = _bestPlayers[3].Id, Points = 1}
         });
         var httpContent = new StringContent(json, encoding: Encoding.UTF8, "application/json");
-        client.PostAsync("http://127.0.0.1:5295/MatchHistory/add-match", httpContent);
+        client.PostAsync($"http://{GameHub.SERVER_IP}:5295/MatchHistory/add-match", httpContent);
     }
 
     //ova metoda treba kasnije da se obrise
@@ -633,7 +633,7 @@ public class GameState
         });
 
         var httpContent = new StringContent(json, encoding: Encoding.UTF8, "application/json");
-        client.PostAsync($"http://127.0.0.1:5295/UnfinishedGame/add", httpContent);
+        client.PostAsync($"http://{GameHub.SERVER_IP}:5295/UnfinishedGame/add", httpContent);
     }
 
     public string ReCreateState(JObject gameStateJSON, List<PlayerInfo> players)

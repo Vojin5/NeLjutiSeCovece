@@ -14,6 +14,7 @@ public class GameHub : Hub
 
     private static object _gameLock = new();
     private static SemaphoreSlim _gameSemaphore = new SemaphoreSlim(1, 1);
+    public static string SERVER_IP = "10.66.24.118";
 
     public GameHub(IGameLobby lobby, IOnlinePlayers players, IActiveGames games, IPendingGames pendingGames)
     {
