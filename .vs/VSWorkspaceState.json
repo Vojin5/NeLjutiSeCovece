@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Back-End",
+    "\\Back-End\\SignalR",
+    "\\Back-End\\SignalR\\Hubs",
+    "\\Back-End\\SignalR\\Models",
+    "\\Back-End\\SignalR\\Services"
+  ],
+  "SelectedNode": "\\Back-End\\SignalR\\Models\\GameState.cs",
+  "PreviewInSolutionExplorer": false
+}
